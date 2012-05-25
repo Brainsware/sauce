@@ -73,6 +73,10 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable
 			$this->storage[0] = $data;
 			return;
 		}
+		
+		if (is_a($data, '\Sauce\Object')) {
+		    $data = $data->storage;
+		}
 
 		foreach ($data as $key => $value) {
 			if (is_numeric($key)) {
@@ -159,6 +163,11 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable
 				$this->storage []= $arg;
 			}
 		}
+	}
+	
+	public function getArrayCopy ()
+	{
+		return $this->storage;
 	}
 }
 
