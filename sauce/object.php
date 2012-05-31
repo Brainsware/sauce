@@ -20,7 +20,7 @@
 namespace Sauce;
 
 /**
- * ## Bacon Objects
+ * ## Sauce Objects
  *
  * `Object` is a class full of *magic*.
  *
