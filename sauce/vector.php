@@ -172,6 +172,11 @@ class Vector implements \ArrayAccess, \Countable
 	{
 		return count($this->storage);
 	}
+
+	public function is_empty ()
+	{
+		return empty($this->storage);
+	}
 }
 
 ?>
