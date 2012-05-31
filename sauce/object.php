@@ -33,9 +33,6 @@ namespace Sauce;
  * <http://us.php.net/manual/en/class.arrayaccess.php>
  * <http://us.php.net/manual/en/class.countable.php>
  *
- * That means you can use any array functions with an instance of this class,
- * including `count($arr)`.
- *
  * As any other objects, properties can be set arbitrarily. The key difference
  * here is: you can also access them using the index operator.
  *
