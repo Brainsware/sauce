@@ -133,24 +133,37 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable
 		return empty($this->storage);
 	}
 
+
+	/**
+	 * TODO: document parameters
+	 */
+
 	public function merge ()
 	{
 		$args = func_get_args();
+		$a    = new Object();
+
+		// TODO: fix for actual Object
 
 		foreach ($args as $arg) {
 			if (is_an_array($arg)) {
 				foreach ($arg as $key => $value) {
 					$key = strtolower($key);
 
-					if (!$this->offsetExists($key)) {
-						$this->offsetSet($key, $value);
+					if (!$a->offsetExists($key)) {
+						$a->offsetSet($key, $value);
 					}
 				}
 			} else {
-				$this->storage []= $arg;
+				$a->storage []= $arg;
 			}
 		}
+		return $a;
 	}
+
+	/**
+	 * TODO: document parameters
+	 */
 
 	public function mergeF ()
 	{
@@ -165,6 +178,8 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable
 				$this->storage []= $arg;
 			}
 		}
+
+		return $this;
 	}
 	
 	public function getArrayCopy ()

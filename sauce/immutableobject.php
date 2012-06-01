@@ -19,6 +19,9 @@
 
 namespace Sauce;
 
+/**
+ * TODO: Document what this class does.
+ */
 class ImmutableObject extends Object 
 {
 	public function offsetSet   ($key, $value) { $this->deny_access(); }

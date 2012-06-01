@@ -18,7 +18,9 @@
 */
 
 namespace Sauce;
-
+/**
+ * TODO document what this class does.
+ */
 class DateTime extends \DateTime
 {
   public static function now($format = '')

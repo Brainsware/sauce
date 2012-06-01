@@ -36,14 +36,14 @@ function V()
 /* ## A(...)
  *
  * `A` takes all given arguments, no matter what type they are, and stuffs them
- * into a new `Bacon\Object`.
+ * into a new `Sauce\Object`.
  *
- * This is basically a shortcut function for `new \Bacon\Object(array $args)`.
+ * This is basically a shortcut function for `new \Sauce\Object(array $args)`.
  *
  * Examples:
  *
  *     > A(1, 2, 3, 4);
- *     # => object(Bacon\Object)#1 (4) {
+ *     # => object(Sauce\Object)#1 (4) {
  *              ["0"]=> int(1)
  *              ["1"]=> int(2)
  *              ["2"]=> int(3)
@@ -51,7 +51,7 @@ function V()
  *     }
  *
  *     > A(1, array('Hello!' => 'World?'), 'foo')
- *     # => object(Bacon\Object)#1 (3) {
+ *     # => object(Sauce\Object)#1 (3) {
  *           ["0"]=> int(1)
  *           ["1"]=> array(1) {
  *               ["Hello!"]=> string(6) "World?"
@@ -60,7 +60,7 @@ function V()
  *     }
  *
  *     > A(array(1 => 2, 2 => 3));
- *     # => object(Bacon\Object)#1 (2) {
+ *     # => object(Sauce\Object)#1 (2) {
  *           ["1"]=> int(2)
  *           ["3"]=> int(4)
  *     }
@@ -78,16 +78,16 @@ function A ()
 
 /* ## Ar(...)
  *
- * `Ar` works exactly the same as `A` but lets the `Bacon\Object` constructor
+ * `Ar` works exactly the same as `A` but lets the `Sauce\Object` constructor
  * build its data structure in a recursive way. This means every nested array
- * is converted to a `Bacon\Object`.
+ * is converted to a `Sauce\Object`.
  *
  * Examples:
  *
  *     > Ar(1, array('Hello' => 'world!'), 'foo');
- *     # => object(Bacon\Object)#2 (3) {
+ *     # => object(Sauce\Object)#2 (3) {
  *         ["0"]=> int(1)
- *         ["1"]=> object(Bacon\Object)#1 (1) {
+ *         ["1"]=> object(Sauce\Object)#1 (1) {
  *             ["Hello"]=> string(6) "world!"
  *         }
  *         ["2"]=> string(3) "foo"
@@ -106,7 +106,7 @@ function Ar ()
 
 /* ## is\_an\_array($var)
  *
- * Check whether a given variable either really is an array, a `Bacon\Object`
+ * Check whether a given variable either really is an array, a `Sauce\Object`
  * instance, or any other object that implements `ArrayAccess`.
  *
  * Examples:
@@ -155,6 +155,10 @@ function is_cli()
 	return php_sapi_name() == 'cli';
 }
 
+/* ## split\_uri($uri)
+ * TODO
+ * @return string
+ */
 function split_uri ($uri) {
 	$splitted_uri = explode('/', $uri);
 
@@ -175,7 +179,13 @@ function split_uri ($uri) {
 	return $splitted_uri;
 }
 
-
+/* ## path\_info()
+ *
+ * `path_info()` returns the canonalized path info of the request.
+ *
+ * If the path info contains /index.php this will be left out.
+ * Get parameters are not returned.
+ */
 function path_info () {
 	if (array_key_exists('PATH_INFO', $_SERVER)) {
 		$path_info = $_SERVER['PATH_INFO'];
@@ -199,6 +209,15 @@ function path_info () {
 	return $path_info;
 }
 
+/* ## http\_method()
+ *
+ * `http_method()` returns the lowercased Request Method. This can be either
+ * the HTTP verb itself, or otherwise, if a POST variable named `_method` exists
+ * this will be returned.
+ *
+ * @return string
+ * 
+ */
 function http_method () {
 	$method = $_SERVER['REQUEST_METHOD'];
 

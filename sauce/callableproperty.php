@@ -19,6 +19,10 @@
 
 namespace Sauce;
 
+/**
+ * TODO document what this class does.
+ */
+
 abstract class CallableProperty
 {
 	public function __call ($method, $args)

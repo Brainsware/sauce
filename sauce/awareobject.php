@@ -44,6 +44,9 @@ class AwareObject extends Object
 		return parent::offsetUnset($key);
 	}
 
+	/**
+	 * TODO: document what this method does
+	 */
 	public function changed ()
 	{
 		return new Vector($this->changed_properties);

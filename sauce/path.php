@@ -23,6 +23,9 @@ class Path
 {
 	const delimiter = '/';
 
+	/**
+	 * TODO: document this functions parameters, what this does and how to use it.
+	 */
 	public static function join ()
 	{
 		$args = func_get_args();
@@ -137,13 +140,9 @@ class Path
      */
     public static function rmrf ($dir)
     {
-        self::truncateDir($dir);
+        self::truncate_directory($dir);
 
-        if (!@rmdir($dir)) {
-            return false;
-        }
-
-        return true;
+        return @rmdir($dir);
     }
 }
 

@@ -37,11 +37,17 @@ class Vector implements \ArrayAccess, \Countable
 		return $this->storage;
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function slice ($start, $end)
 	{
 		return array_slice($this->storage, $start, ($end - $start));
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function join ($delimiter)
 	{
 		$strings = $this->map(function ($v) {
@@ -51,6 +57,9 @@ class Vector implements \ArrayAccess, \Countable
 		return join($delimiter, $strings->to_array());
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function map ($callback)
 	{
 		$result = new self();
@@ -66,6 +75,9 @@ class Vector implements \ArrayAccess, \Countable
 		return $result;
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function select ($callback)
 	{
 		return $this->map(function ($v) use ($callback) {
@@ -75,6 +87,9 @@ class Vector implements \ArrayAccess, \Countable
 		});
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function exclude ($callback)
 	{
 		return $this->map(function ($v) use ($callback) {
@@ -84,6 +99,9 @@ class Vector implements \ArrayAccess, \Countable
 		});
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function push ($value)
 	{
 		if (is_an_array($value)) {
@@ -97,16 +115,25 @@ class Vector implements \ArrayAccess, \Countable
 		$this->storage []= $value;
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function pop ()
 	{
 		return array_pop($this->storage);
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function shift ()
 	{
 		return array_shift($this->storage);
 	}
 
+	/**
+	 * TODO: document what this does and how to use it.
+	 */
 	public function includes ($value)
 	{
 		for ($i = 0; $i < $this->count(); $i++) {
