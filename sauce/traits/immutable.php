@@ -20,16 +20,17 @@
 namespace Sauce;
 
 /**
- * TODO: Document what this class does.
+ * TODO: Document what this trait does.
  */
 
-abstract class Immutable implements \ArrayAccess
+trait Immutable
 {
-	public function offsetSet   () { $this->deny_access(); }
-	public function offsetUnset () { $this->deny_access(); }
-	public function __set       () { $this->deny_access(); }
+	public function offsetSet   ($key, $value) { $this->__deny_access(); }
+	public function offsetUnset ($key)         { $this->__deny_access(); }
+	public function __set       ($key, $value) { $this->__deny_access(); }
+	public function __unset     ($key)         { $this->__deny_access(); }
 	
-	private function deny_access ()
+	private function __deny_access ()
 	{
 		throw new \LogicException('This object is immutable.');
 	}
