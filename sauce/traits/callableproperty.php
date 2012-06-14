@@ -17,7 +17,7 @@
 
 */
 
-namespace Sauce;
+namespace Sauce\Traits;
 
 /**
  * TODO document what this class does.
