@@ -23,7 +23,7 @@ namespace Sauce;
  * TODO document what this class does.
  */
 
-trait CallableProperty
+abstract class CallableProperty
 {
 	public function __call ($method, $args)
 	{
@@ -34,10 +34,6 @@ trait CallableProperty
 				$closure,
 				$args
 			);
-		} else {
-			if (is_callable(parent::__call)) {
-				return parent::__call($method, $args);
-			}
 		}
 	}
 }
