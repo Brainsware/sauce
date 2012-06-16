@@ -17,14 +17,22 @@
 
 */
 
-namespace Sauce\Traits;
+namespace Sauce;
 
 /**
  * TODO: Document what this class does.
  */
 class ImmutableObject extends Object 
 {
-	use Traits\Immutable;
+	public function offsetSet   ($key, $value) { $this->deny_access(); }
+	public function offsetUnset ($key)         { $this->deny_access(); }
+	public function __set       ($key, $value) { $this->deny_access(); }
+	public function mergeF      ()             { $this->deny_access(); }
+
+	protected function deny_access ()
+	{
+		throw new \LogicException('This object is immutable.');
+	}
 }
 
 ?>
