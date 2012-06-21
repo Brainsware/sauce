@@ -1,7 +1,7 @@
 Sauce is a general purpose library providing containers and functions
-that ease development in PHP. Currently only features up to PHP 5.3.x
-are supported, but a 5.4.x branch especially taking advantage of
-traits will be added soon.
+that ease development in PHP. This branch only supports features up to
+PHP 5.3.x. For the current PHP version, please see the master branch,
+for other PHP versions, please checkout our project page.
 
 Provided classes:
 
