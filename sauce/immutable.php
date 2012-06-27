@@ -27,7 +27,7 @@ abstract class Immutable implements \ArrayAccess
 {
 	public function offsetSet   () { $this->deny_access(); }
 	public function offsetUnset () { $this->deny_access(); }
-	public function __set       () { $this->deny_access(); }
+	public function __set       ($name, $value) { $this->deny_access(); }
 	
 	private function deny_access ()
 	{
