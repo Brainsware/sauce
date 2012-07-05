@@ -23,9 +23,9 @@ class Vector implements \ArrayAccess, \Countable
 {
 	protected $storage;
 
-	public function __construct ($data = array())
+	public function __construct ($data = [])
 	{
-		$this->storage = array();
+		$this->storage = [];
 
 		foreach ($data as $value) {
 			$this->storage []= $value;

@@ -62,9 +62,9 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable
 {
 	protected $storage;
 
-	public function __construct ($data = array(), $recursive = false)
+	public function __construct ($data = [], $recursive = false)
 	{
-		$this->storage = array();
+		$this->storage = [];
 
 		if (!is_an_array($data)) {
 			$this->storage[0] = $data;

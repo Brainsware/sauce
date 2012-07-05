@@ -23,7 +23,7 @@ class AwareObject extends Object
 {
 	protected $changed_properties;
 
-	public function __construct ($data = array(), $recursive = false)
+	public function __construct ($data = [], $recursive = false)
 	{
 		$this->changed_properties = new Vector();
 
