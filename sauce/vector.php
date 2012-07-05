@@ -192,7 +192,7 @@ class Vector implements \ArrayAccess, \Countable
 
 	public function offsetExists ($index)
 	{
-		return $index < $this->count();
+		return is_numeric($index) && $index < $this->count();
 	}
 
 	public function count ()
