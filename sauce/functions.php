@@ -155,6 +155,10 @@ function is_cli()
 	return php_sapi_name() == 'cli';
 }
 
+function is_cli_server () {
+	return (php_sapi_name() == 'cli-server');
+}
+
 /* ## split\_uri($uri)
  * TODO
  * @return string
