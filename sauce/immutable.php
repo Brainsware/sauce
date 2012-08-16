@@ -22,7 +22,6 @@ namespace Sauce;
 /**
  * TODO: Document what this class does.
  */
-
 abstract class Immutable implements \ArrayAccess
 {
 	public function offsetSet   () { $this->deny_access(); }

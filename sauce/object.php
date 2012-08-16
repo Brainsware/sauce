@@ -133,11 +133,9 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable, \Json
 		return empty($this->storage);
 	}
 
-
 	/**
 	 * TODO: document parameters
 	 */
-
 	public function merge ()
 	{
 		$args = func_get_args();
@@ -158,13 +156,13 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable, \Json
 				$a->storage []= $arg;
 			}
 		}
+
 		return $a;
 	}
 
 	/**
 	 * TODO: document parameters
 	 */
-
 	public function mergeF ()
 	{
 		$args = func_get_args();
