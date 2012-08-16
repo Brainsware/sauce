@@ -99,12 +99,15 @@ class Vector implements \ArrayAccess, \Countable
 		});
 	}
 
-	/**
-	 * TODO: document what this does and how to use it.
+	/* Takes any type of data and pushes it onto the vector. Given an array,
+	 * (PHP built-in or Vector), it will push its contents. Any object or
+	 * Object instance is pushed as-is.
+	 *
+	 * TODO: document how to use it
 	 */
 	public function push ($value)
 	{
-		if (is_an_array($value)) {
+		if (is_an_array($value) && !is_a($value, '\Sauce\Object')) {
 			foreach ($value as $v) {
 				$this->push($v);
 			}
