@@ -190,12 +190,7 @@ function path_info () {
 	if (array_key_exists('PATH_INFO', $_SERVER)) {
 		$path_info = $_SERVER['PATH_INFO'];
 	} else {
-		$path_info = '';
-	}
-
-	if (empty($path_info)) {
-		$path_info = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
-		$path_info = str_replace($path_info, '', $_SERVER['REQUEST_URI']);
+		$path_info = $_SERVER['REQUEST_URI'];
 	}
 
 	// In some cases path info does include the GET parameters
