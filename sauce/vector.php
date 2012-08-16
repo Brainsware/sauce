@@ -19,7 +19,7 @@
 
 namespace Sauce;
 
-class Vector implements \ArrayAccess, \Countable
+class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 {
 	protected $storage;
 
@@ -206,6 +206,11 @@ class Vector implements \ArrayAccess, \Countable
 	public function is_empty ()
 	{
 		return empty($this->storage);
+	}
+
+	public function jsonSerialize ()
+	{
+		return $this->storage;
 	}
 }
 
