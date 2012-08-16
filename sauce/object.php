@@ -58,7 +58,7 @@ namespace Sauce;
  * also binds the function to the `Object` instance.
  *
  */
-class Object extends CallableProperty implements \ArrayAccess, \Countable
+class Object extends CallableProperty implements \ArrayAccess, \Countable, \JsonSerializable
 {
 	protected $storage;
 
@@ -183,6 +183,11 @@ class Object extends CallableProperty implements \ArrayAccess, \Countable
 	}
 	
 	public function getArrayCopy ()
+	{
+		return $this->storage;
+	}
+
+	public function jsonSerialize ()
 	{
 		return $this->storage;
 	}
