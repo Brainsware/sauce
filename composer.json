@@ -1,0 +1,6 @@
+{
+    "name": "brainsware/sauce",
+	"minimum-stability": "dev",
+
+	"autoload": { "Sauce": "lib/" }
+}
