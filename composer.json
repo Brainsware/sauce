@@ -2,5 +2,9 @@
     "name": "brainsware/sauce",
 	"minimum-stability": "dev",
 
+	"require": {
+		"php": ">= 5.4.0"
+	}
+
 	"autoload": { "Sauce": "lib/" }
 }
