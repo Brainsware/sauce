@@ -8,6 +8,6 @@
 
 	"autoload": {
 		"psr-0": { "Sauce": "lib/" },
-		"files": [ "src/Sauce/functions.php" ]
+		"files": [ "lib/Sauce/functions.php" ]
 	}
 }
