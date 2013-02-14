@@ -19,6 +19,9 @@ namespace Sauce;
  * That means you can use any array functions with an instance of this class,
  * including `count($arr)`.
  *
+ * NOTE: The above is true as soon as PHP actually implements it. Some
+ *       functions actually don't take objects as parameters (yet).
+ *
  * As any other objects, properties can be set arbitrarily. The key difference
  * here is: you can also access them using the index operator.
  *

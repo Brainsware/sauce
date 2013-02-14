@@ -19,6 +19,16 @@
 
 namespace Sauce;
 
+/*	AwareObject keeps track of changed properties and stores the keys of all
+ *	changed properties in a Vector object. That means any changes to the
+ *	data passed in to the constructor (even if you don't pass any data) is
+ *	recorded.
+ *
+ *	This has been mainly implemented to be used in ORM implementations, so only
+ *	the changed data is actually written back to the database.
+ *
+ *	To retrieve the list of changed properties, call #changed.
+ */
 class AwareObject extends Object
 {
 	protected $changed_properties;
@@ -44,9 +54,7 @@ class AwareObject extends Object
 		return parent::offsetUnset($key);
 	}
 
-	/**
-	 * TODO: document what this method does
-	 */
+	/* Retrieve the list of changed properties. */
 	public function changed ()
 	{
 		return new Vector($this->changed_properties);

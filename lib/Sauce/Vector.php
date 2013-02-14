@@ -19,6 +19,25 @@
 
 namespace Sauce;
 
+/* `Vector` is a simple value store. It can be used as two-dimensional array or
+ * stack, taking any type of values.
+ *
+ * `Vector` implements two important interfaces: `ArrayAccess` and `Countable`. Those are
+ * defined in the PHP standard library:
+ *
+ * <http://us.php.net/manual/en/class.arrayaccess.php>
+ * <http://us.php.net/manual/en/class.countable.php>
+ *
+ * That means you can use any array functions with an instance of this class,
+ * including `count($arr)`.
+ *
+ * NOTE: The above is true as soon as PHP actually implements it. Some
+ *       functions actually don't take objects as parameters (yet).
+ *
+ * The elements can be accessed with a numeric index, but only in the
+ * boundaries of the stored values. If you try to access or set an index higher
+ * or equal to the the current amount of stored values, an exception is thrown.
+ */
 class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 {
 	protected $storage;
@@ -36,14 +55,27 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		}
 	}
 
+	/* Return an actual PHP array.
+	 * This method has to be used for foreach loops.
+	 */
 	public function to_array ()
 	{
 		return $this->storage;
 	}
 	public function getArrayCopy() { return $this->to_array(); }
 
+	/* Slice the array. Takes numeric start and end indices.
+	 * If a non-numeric index is passed an exception is thrown. */
 	public function slice ($start, $end)
 	{
+		if (!is_numeric($start)) {
+			throw new \OutOfBoundsException("Invalid start index {$index}");
+		}
+
+		if (!is_numeric($end)) {
+			throw new \OutOfBoundsException("Invalid end index {$index}");
+		}
+
 		return array_slice($this->storage, $start, ($end - $start));
 	}
 
@@ -116,8 +148,8 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return array_shift($this->storage);
 	}
 
-	/**
-	 * TODO: document what this does and how to use it.
+	/* Takes any value and compares it to the stored values. Returns true if it is found, false otherwise.
+	 * 
 	 */
 	public function includes ($value)
 	{
