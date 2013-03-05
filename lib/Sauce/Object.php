@@ -41,7 +41,7 @@ namespace Sauce;
  * 	> **Note:** all keys are automatically converted to lowercase.
  *
  * Additionally, `Object` uses the trait `CallableProperty`. It gives you the
- * power to add a closure/anonymous function as property of an instance and 
+ * power to add a closure/anonymous function as property of an instance and
  * call it immediately. Without this base class, you would have to store the
  * function in a seperate variable or use call_user_func. `CallableProperty`
  * also binds the function to the `Object` instance.
