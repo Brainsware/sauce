@@ -167,9 +167,10 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		});
 	}
 
-	/* Takes any type of data and pushes it onto the vector. Given an array,
-	 * (PHP built-in or Vector), it will push its contents. Any object or
-	 * Object instance is pushed as-is.
+	/* Takes any type of data and pushes it onto the vector.
+	 *
+	 * Given an array, (PHP built-in or Vector), it will push its contents.
+	 * Any object or Object instance is pushed as-is.
 	 */
 	public function push ($value)
 	{
@@ -184,6 +185,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		$this->storage []= $value;
 	}
 
+	/* Removes the very last element and returns it. */
 	public function pop ()
 	{
 		return array_pop($this->storage);
@@ -194,8 +196,12 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return array_shift($this->storage);
 	}
 
-	/* Takes any value and compares it to the stored values. Returns true if it is found, false otherwise.
+	/* Takes any value and compares it to the stored values. Returns true if it
+	 * is found, false otherwise.
 	 *
+	 * NOTE: The comparison is made with '===', so the type does matter here.
+	 *       If a less restrictive comparison is needed, use #map, #select or
+	 *       #exclude.
 	 */
 	public function includes ($value)
 	{
@@ -208,6 +214,14 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return false;
 	}
 
+	/* Implementation of ArrayAccess#offsetGet; returns the value at a given
+	 * numeric index.
+	 *
+	 * NOTE: If given any non-numeric index, an OutOfBounds exception is thrown.
+	 *
+	 * NOTE: If given an index greater or equal to the number of elements, an
+	 *       OutOfBoundsException is thrown.
+	 */
 	public function offsetGet ($index)
 	{
 		if (!is_numeric($index)) {
@@ -221,6 +235,14 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return $this->storage[$index];
 	}
 
+	/* Implementation of ArrayAccess#offsetSet; sets a value at a given
+	 * numeric index.
+	 *
+	 * NOTE: If given any non-numeric index, an OutOfBoundsException is thrown.
+	 *
+	 * NOTE: If given any index greater than the number of elements, an
+	 *       OutOfBoundsException is thrown.
+	 */
 	public function offsetSet ($index, $value)
 	{
 		if (!is_numeric($index)) {
@@ -234,8 +256,17 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		$this->storage[$index] = $value;
 	}
 
+	/* Remove an element at a given numeric index and return it.
+	 *
+	 * NOTE: If given any non-numeric index, an OutOfBoundsException is thrown.
+	 *
+	 * NOTE: If given any index greater than the number of elements, an
+	 *       OutOfBoundsException is thrown.
+	 */
 	public function offsetUnset ($index)
 	{
+		$value = $this->offsetGet($index);
+
 		if ($index == 0) {
 			return array_shift($this->storage);
 		}
@@ -251,23 +282,34 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		}
 
 		$this->storage = $left;
+
+		return $value;
 	}
 
+	/* Returns whether a given numeric index exists.
+	 *
+	 * NOTE: This method DOES NOT throw any exceptions.
+	 */
 	public function offsetExists ($index)
 	{
 		return is_numeric($index) && $index < $this->count();
 	}
 
+	/* Returns the number of elements stored. */
 	public function count ()
 	{
 		return count($this->storage);
 	}
 
+	/* Returns whether or not the Vector is empty. */
 	public function is_empty ()
 	{
 		return empty($this->storage);
 	}
 
+	/* Implementation of JsonSerializable; returns the internal storage - a PHP
+	 * built-in array.
+	 */
 	public function jsonSerialize ()
 	{
 		return $this->storage;
