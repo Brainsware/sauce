@@ -19,10 +19,14 @@
 
 namespace Sauce;
 
-/**
- * TODO document what this class does.
+/* CallableProperty implements the magic method __call to catch all calls to
+ * not actually implemented methods. It then searches for a callable property
+ * (a closure stored in a property) with the same name. If it finds one, it
+ * returns the result of the call.
+ *
+ * If the property is not callable or not found, a BadMethodCallException is
+ * thrown.
  */
-
 trait CallableProperty
 {
 	public function __call ($method, $args)
@@ -35,6 +39,10 @@ trait CallableProperty
 				$args
 			);
 		}
+
+		$args = V($args);
+
+		throw new \BadMethodCallException("Method not found: $method (" . $args->join(', ') . ")");
 	}
 }
 

@@ -22,6 +22,13 @@
  * library or basic extension functions.
  */
 
+/* Shortcut for creating a new Vector object.
+ *
+ * Example:
+ * 	V([]) 
+ *  # is the same as calling
+ *  new \Sauce\Vector([])
+ */
 function V()
 {
 	$data = func_get_args();
@@ -158,23 +165,24 @@ function dump ()
 	if (!is_cli()) echo '</pre>';
 }
 
+/* Check whether PHP is run from an application server or the command line. */
 function is_cli()
 {
 	return php_sapi_name() == 'cli';
 }
 
+/* Check whether the application server running PHP is in fact the built-in
+ * server.
+ */
 function is_cli_server () {
 	return (php_sapi_name() == 'cli-server');
 }
 
-/* ## split\_uri($uri)
- * TODO
- * @return string
- */
+/* Splits a URI into chunks seperated by '/' and returns them as array. */
 function split_uri ($uri) {
 	$splitted_uri = explode('/', $uri);
 
-	# Remove empty strings from beginning and end
+	// Remove empty strings from beginning and end
 	if (count($splitted_uri) > 1) {
 		$last = end($splitted_uri);
 		$first = reset($splitted_uri);
@@ -196,7 +204,7 @@ function split_uri ($uri) {
  * `path_info()` returns the canonalized path info of the request.
  *
  * If the path info contains /index.php this will be left out.
- * Get parameters are not returned.
+ * GET parameters are not returned.
  */
 function path_info () {
 	if (array_key_exists('PATH_INFO', $_SERVER)) {
@@ -230,8 +238,8 @@ function path_info () {
 /* ## http\_method()
  *
  * `http_method()` returns the lowercased Request Method. This can be either
- * the HTTP verb itself, or otherwise, if a POST variable named `_method` exists
- * this will be returned.
+ * the HTTP verb itself, or otherwise, if a POST parameter named `_method`
+ * exists this will be returned.
  *
  * @return string
  * 

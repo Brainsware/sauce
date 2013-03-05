@@ -19,8 +19,9 @@
 
 namespace Sauce;
 
-/**
- * TODO: Document what this class does.
+/* ImmutableObject is a variation of Object that overrides all storage altering
+ * methods. Upon calling any of those, a LogicException is thrown, ensuring the
+ * data held is immutable in terms of array indexing and property setting.
  */
 class ImmutableObject extends Object 
 {

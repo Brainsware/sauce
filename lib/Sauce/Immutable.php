@@ -19,8 +19,9 @@
 
 namespace Sauce;
 
-/**
- * TODO: Document what this class does.
+/* Immutable is an abstract class implementing ArrayAccess' methods each
+ * raising a LogicException. This ensures any instance of a class extending
+ * Immutable is not changable via array indexing or property setting.
  */
 abstract class Immutable implements \ArrayAccess
 {

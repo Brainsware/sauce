@@ -19,22 +19,30 @@
 
 namespace Sauce;
 
-/**
- * TODO document what this class does.
+/* This class adds two convenient methods to the original DateTime class:
+ * #now and #db_format.
  */
 class DateTime extends \DateTime
 {
-  public static function now($format = '')
-  {
-    $now = new self();
+	/* Returns the current time/date (NOW) as new DateTime object.
+	 *
+	 * If no format is given, the default format is used: 'Y-m-d H:i:s'.
+	 */
+	public static function now($format = '')
+	{
+		$now = new self();
 
-    return $now->format(empty($format) ? 'Y-m-d H:i:s' : $format);
-  }
+		return $now->format(empty($format) ? 'Y-m-d H:i:s' : $format);
+	}
 
-  public function db_format ($format = 'Y-m-d H:i:s')
-  {
-    return $this->format($format);
-  }
+	/* Returns the stored time in a (default) format usable for databases.
+	 *
+	 * If format is given, the default format is used: 'Y-m-d H:i:s'
+	 */
+	public function db_format ($format = 'Y-m-d H:i:s')
+	{
+		return $this->format($format);
+	}
 }
 
 ?>

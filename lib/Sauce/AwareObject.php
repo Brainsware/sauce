@@ -33,6 +33,7 @@ class AwareObject extends Object
 {
 	protected $changed_properties;
 
+	/* Create a new AwareObject instance. */
 	public function __construct ($data = [], $recursive = false)
 	{
 		$this->changed_properties = new Vector();
@@ -40,6 +41,9 @@ class AwareObject extends Object
 		parent::__construct($data, $recursive);
 	}
 
+	/* Pushes the key to the changed properties stack and returns
+	 * Object#offsetSet
+	 */
 	public function offsetSet ($key, $value)
 	{
 		$this->changed_properties->push($key);
@@ -47,6 +51,9 @@ class AwareObject extends Object
 		return parent::offsetSet($key, $value);
 	}
 
+	/* Pushes the key to the changed properties stack and returns
+	 * Object#offsetUnset
+	 */
 	public function offsetUnset ($key)
 	{
 		$this->changed_properties->push($key);
