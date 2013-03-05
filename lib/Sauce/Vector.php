@@ -188,13 +188,41 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	/* Removes the very last element and returns it. */
 	public function pop ()
 	{
-		return array_pop($this->storage);
+		if ($this->count() > 0) {
+			return array_pop($this->storage);
+		}
+
+		return null;
 	}
 
+	/* Removes the very first element and returns it. */
 	public function shift ()
 	{
-		return array_shift($this->storage);
+		if ($this->count() > 0) {
+			return $this->offsetUnset(0);
+		}
+
+		return null;		
 	}
+
+	/* Prepend given value(s) at the beginning. */
+	public function unshift ($values = [])
+	{
+		if (!is_an_array($values)) {
+			$values = [ $values ];
+		}
+
+		$values = V($values);
+		$storage = $this->storage;
+
+		foreach ($values->to_array() as $value) {
+			array_unshift($storage, $value);
+		}
+
+		$this->storage = $storage;
+	}
+	/* Alias for #unshift */
+	public function prepend ($values = []) { return $this->unshift($values); }
 
 	/* Takes any value and compares it to the stored values. Returns true if it
 	 * is found, false otherwise.
