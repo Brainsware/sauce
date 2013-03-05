@@ -34,6 +34,9 @@ namespace Sauce;
  * NOTE: The above is true as soon as PHP actually implements it. Some
  *       functions actually don't take objects as parameters (yet).
  *
+ * NOTE: Also foreach($obj as $foo) does not work yet. You have to give foreach
+ *       $obj->to_array() in order to make it work properly.
+ *
  * The elements can be accessed with a numeric index, but only in the
  * boundaries of the stored values. If you try to access or set an index higher
  * or equal to the the current amount of stored values, an exception is thrown.
@@ -42,6 +45,13 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 {
 	protected $storage;
 
+	/* Creates a new Vector object taking any kind of data.
+	 *
+	 * Given another Vector object, it will copy all its data.
+	 * Given an array, it will copy all its content into the internal storage.
+	 *
+	 * For now, Vector only accepts actual array data.
+	 */
 	public function __construct ($data = [])
 	{
 		$this->storage = [];
@@ -62,6 +72,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	{
 		return $this->storage;
 	}
+	/* Alias for #to_array */
 	public function getArrayCopy() { return $this->to_array(); }
 
 	/* Slice the array. Takes numeric start and end indices.
@@ -79,6 +90,14 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return array_slice($this->storage, $start, ($end - $start));
 	}
 
+	/* Join the strval() of each element of the array with a specified delimiter.
+	 *
+	 * Example:
+	 *
+	 * 	$a = V([ 'A', 'B', 'C' ]);
+	 * 	$a->join(', ');
+	 * 	# => "A, B, C"
+	 */
 	public function join ($delimiter)
 	{
 		$strings = $this->map(function ($v) {
@@ -88,6 +107,15 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return join($delimiter, $strings->to_array());
 	}
 
+	/* Iterate over all elements given a callback and return the results of
+	 * the callback's return values as new Vector.
+	 *
+	 * Example:
+	 *
+	 * 	$a = V([ 1, 2, 3 ]);
+	 * 	$a->map(function($i) { return $i + 1; });
+	 * 	# => [ 2, 3, 4 ] (Vector)
+	 */
 	public function map ($callback)
 	{
 		$result = new self();
@@ -103,6 +131,15 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		return $result;
 	}
 
+	/* Iterate over all elements given a callback and only return the elements
+	 * where the callback returns boolean *true*.
+	 *
+	 * Example:
+	 *
+	 * 	$a = V([ 1, 2, 3 ]);
+	 * 	$a->select(function ($i) { return $i > 2; });
+	 * 	# => [ 3 ] (Vector)
+	 */
 	public function select ($callback)
 	{
 		return $this->map(function ($v) use ($callback) {
@@ -112,6 +149,15 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 		});
 	}
 
+	/* Iterate over all elements given a callback and only return the elements
+	 * where the callback returns boolean *false*.
+	 *
+	 * Example:
+	 *
+	 * 	$a = V([ 1, 2, 3 ]);
+	 * 	$a->exclude(function ($i) { return $i > 2; });
+	 * 	# => [ 1, 2 ] (Vector)
+	 */
 	public function exclude ($callback)
 	{
 		return $this->map(function ($v) use ($callback) {
@@ -149,7 +195,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	}
 
 	/* Takes any value and compares it to the stored values. Returns true if it is found, false otherwise.
-	 * 
+	 *
 	 */
 	public function includes ($value)
 	{
