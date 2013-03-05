@@ -66,13 +66,14 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	}
 
 	/* Return an actual PHP array.
-	 * This method has to be used for foreach loops.
+	 *
+	 * NOTE: This method has to be used for foreach loops.
 	 */
 	public function to_array ()
 	{
 		return $this->storage;
 	}
-	/* Alias for #to_array */
+	/* Alias for #to_array to implement the ArrayAccess */
 	public function getArrayCopy() { return $this->to_array(); }
 
 	/* Slice the array. Takes numeric start and end indices.

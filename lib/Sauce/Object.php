@@ -59,7 +59,7 @@ namespace Sauce;
  *
  * Additionally, `Object` uses the trait `CallableProperty`. It gives you the
  * power to add a closure/anonymous function as property of an instance and
- * call it immediately. Without this base class, you would have to store the
+ * call it immediately. Without this trait, you would have to store the
  * function in a seperate variable or use call_user_func. `CallableProperty`
  * also binds the function to the `Object` instance.
  */
@@ -69,6 +69,11 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 
 	protected $storage;
 
+	/* Creates a new Object instance, taking any kind of data.
+	 *
+	 * Additionally, the second parameter $recursive can be used to transform
+	 * nested PHP built-in arrays into nested Object instances.
+	 */
 	public function __construct ($data = [], $recursive = false)
 	{
 		$this->storage = [];
@@ -99,13 +104,23 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 		}
 	}
 
+	/* Return whether given key exists. */
 	public function offsetExists ($key)
 	{
 		return array_key_exists($key, $this->storage);
 	}
+
+	/* Magic method to mimic array index access, also an alias for
+	 * #offsetExists.
+	 */
 	public function __isset ($key) { return $this->offsetExists($key); }
+
+	/* Alias for #offsetExists */
 	public function has_key ($key) { return $this->offsetExists($key); }
 
+	/* Implementation of ArrayAccess#offsetGet; returns the value of a given
+	 * key.
+	 */
 	public function offsetGet ($key)
 	{
 		if ($this->offsetExists($key)) {
@@ -114,23 +129,34 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 
 		return null;
 	}
+
+	/* Magic method to mimic array index access, also an alias for #offsetGet */
 	public function __get ($key) { return $this->offsetGet($key); }
 
+	
+	/* Implementation of ArrayAccess#offsetSet; sets a value for a given key. */
 	public function offsetSet ($key, $value)
 	{
 		$this->storage[$key] = $value;
 	}
-	public function __set ($key, $value) { return $this->offsetSet($key, $value); }
 
+	/* Magic method to mimic left-hand-side index access, also an alias for
+	 * #offsetSet
+	 */
+	public function __set ($key, $value) { return $this->offsetSet($key, $value); }
+	
+	/* Remove a given key and its associated value. */
 	public function offsetUnset ($key)
 	{
 		if ($this->offsetExists($key)) {
 			unset($this->storage[$key]);
 		}
 	}
+
+	/* Magic method to mimic array index access, also an alias for #offsetUnset */
 	public function __unset ($key) { return $this->offsetUnset($key); }
 
-	/* Returns how many key-value pairs this object holds. */
+	/* Returns the number of stored key-value pairs. */
 	public function count ()
 	{
 		return count($this->storage);
@@ -264,11 +290,21 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 		return $this;
 	}
 	
-	public function getArrayCopy ()
+	/* Return an actual PHP array.
+	 *
+	 * NOTE: This method has to be used for foreach loops.
+	 */
+	public function to_array()
 	{
 		return $this->storage;
 	}
 
+	/* Alias for #to_array to implement the ArrayAccess */
+	public function getArrayCopy () { return $this->to_array(); }
+
+	/* Implementation of JsonSerializable; returns the internal storage - a PHP
+	 * built-in array.
+	 */
 	public function jsonSerialize ()
 	{
 		return $this->storage;
