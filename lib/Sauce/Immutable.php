@@ -19,17 +19,20 @@
 
 namespace Sauce;
 
-/**
- * TODO document what this class does.
+/* Immutable is an abstract class implementing ArrayAccess' methods each
+ * raising a LogicException. This ensures any instance of a class extending
+ * Immutable is not changable via array indexing or property setting.
  */
-class DateTime extends \DateTime
+abstract class Immutable implements \ArrayAccess
 {
-  public static function now($format = '')
-  {
-    $now = new self();
-
-    return $now->format(empty($format) ? 'Y-m-d H:i:s' : $format);
-  }
+	public function offsetSet   () { $this->deny_access(); }
+	public function offsetUnset () { $this->deny_access(); }
+	public function __set       ($name, $value) { $this->deny_access(); }
+	
+	private function deny_access ()
+	{
+		throw new \LogicException('This object is immutable.');
+	}
 }
 
 ?>

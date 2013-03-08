@@ -1,0 +1,28 @@
+{
+    "name": "brainsware/sauce",
+	"minimum-stability": "dev",
+
+	"require": {
+		"php": ">= 5.4.0"
+	},
+
+	"autoload": {
+		"psr-0": { "Sauce": "lib/" },
+		"files": [ "lib/Sauce/functions.php" ]
+	},
+
+    "authors": [
+		{
+            "name": "Alexander Pánek",
+            "email": "a.panek@brainsware.org"
+        },
+		{
+			"name": "Daniel Khalil",
+			"email": "d.khalil@brainsware.org"
+		},
+		{
+			"name": "Igor Galić",
+			"email": "i.galic@brainsware.org"
+		}
+    ]
+}

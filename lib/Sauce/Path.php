@@ -23,8 +23,13 @@ class Path
 {
 	const delimiter = '/';
 
-	/**
-	 * TODO: document this functions parameters, what this does and how to use it.
+	/* Join any number of given path fragments with the default directory
+	 * delimiter.
+	 *
+	 * Example:
+	 *
+	 * 	$path = \Sauce\Path::join(APP_DIR, 'htdocs/scripts', $some_name);
+	 * 	# => '/srv/web/app/htdocs/scripts/some_name'
 	 */
 	public static function join ()
 	{
@@ -99,8 +104,7 @@ class Path
         return true;
     }
 
-    /**
-     * Empties a directory. Buh.
+    /* Delete all contents of a given directory.
      *
      * @param string $dir Directory.
      * @return bool
@@ -132,10 +136,9 @@ class Path
         return true;
     }
 
-    /**
-     * Completely deletes a directory and all its subdirectories.
+    /* Completely removes a directory and all its contents.
      *
-     * @param string $dir Directory. Nothing else.
+     * @param string $dir Directory.
      * @return bool
      */
     public static function rmrf ($dir)

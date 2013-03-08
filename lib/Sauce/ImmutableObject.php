@@ -19,16 +19,18 @@
 
 namespace Sauce;
 
-/**
- * TODO: Document what this class does.
+/* ImmutableObject is a variation of Object that overrides all storage altering
+ * methods. Upon calling any of those, a LogicException is thrown, ensuring the
+ * data held is immutable in terms of array indexing and property setting.
  */
-abstract class Immutable implements \ArrayAccess
+class ImmutableObject extends Object 
 {
-	public function offsetSet   () { $this->deny_access(); }
-	public function offsetUnset () { $this->deny_access(); }
-	public function __set       ($name, $value) { $this->deny_access(); }
-	
-	private function deny_access ()
+	public function offsetSet   ($key, $value) { $this->deny_access(); }
+	public function offsetUnset ($key)         { $this->deny_access(); }
+	public function __set       ($key, $value) { $this->deny_access(); }
+	public function mergeF      ()             { $this->deny_access(); }
+
+	protected function deny_access ()
 	{
 		throw new \LogicException('This object is immutable.');
 	}

@@ -19,37 +19,29 @@
 
 namespace Sauce;
 
-class AwareObject extends Object
+/* This class adds two convenient methods to the original DateTime class:
+ * #now and #db_format.
+ */
+class DateTime extends \DateTime
 {
-	protected $changed_properties;
-
-	public function __construct ($data = [], $recursive = false)
-	{
-		$this->changed_properties = new Vector();
-
-		parent::__construct($data, $recursive);
-	}
-
-	public function offsetSet ($key, $value)
-	{
-		$this->changed_properties->push($key);
-
-		return parent::offsetSet($key, $value);
-	}
-
-	public function offsetUnset ($key)
-	{
-		$this->changed_properties->push($key);
-
-		return parent::offsetUnset($key);
-	}
-
-	/**
-	 * TODO: document what this method does
+	/* Returns the current time/date (NOW) as new DateTime object.
+	 *
+	 * If no format is given, the default format is used: 'Y-m-d H:i:s'.
 	 */
-	public function changed ()
+	public static function now($format = '')
 	{
-		return new Vector($this->changed_properties);
+		$now = new self();
+
+		return $now->format(empty($format) ? 'Y-m-d H:i:s' : $format);
+	}
+
+	/* Returns the stored time in a (default) format usable for databases.
+	 *
+	 * If format is given, the default format is used: 'Y-m-d H:i:s'
+	 */
+	public function db_format ($format = 'Y-m-d H:i:s')
+	{
+		return $this->format($format);
 	}
 }
 
