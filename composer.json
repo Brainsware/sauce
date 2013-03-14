@@ -1,29 +1,24 @@
 {
     "name": "brainsware/sauce",
-	"minimum-stability": "dev",
+	"description": "Sauce is a general purpose library providing containers and functions that ease development in PHP.",
 	"license": "Apache-2.0",
+	"homepage": "http://baconphp.net",
 
-	"require": {
-		"php": ">= 5.4.0"
+    "authors": [
+		{ "name": "Alexander Pánek", "email": "a.panek@brainsware.org"  },
+		{ "name": "Daniel Khalil",   "email": "d.khalil@brainsware.org" },
+		{ "name": "Igor Galić",      "email": "i.galic@brainsware.org"  }
+    ],
+
+	"support": {
+		"source": "https://github.com/Brainsware/sauce",
+		"issues": "https://github.com/Brainsware/sauce/issues"
 	},
+
+	"require": { "php": ">= 5.4.0" },
 
 	"autoload": {
 		"psr-0": { "Sauce": "lib/" },
 		"files": [ "lib/Sauce/functions.php" ]
-	},
-
-    "authors": [
-		{
-            "name": "Alexander Pánek",
-            "email": "a.panek@brainsware.org"
-        },
-		{
-			"name": "Daniel Khalil",
-			"email": "d.khalil@brainsware.org"
-		},
-		{
-			"name": "Igor Galić",
-			"email": "i.galic@brainsware.org"
-		}
-    ]
+	}
 }
