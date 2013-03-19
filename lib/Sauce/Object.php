@@ -27,11 +27,12 @@ namespace Sauce;
  * For one, it doesn't only just provide standalone objects which you can
  * throw data at in almost any way, you can also access this data in any way.
  *
- * `Object` implements two interfaces: `ArrayAccess` and `Countable`. Those are
+ * `Object` implements two interfaces: `ArrayAccess`, `Countable` and `JsonSerializable`. Those are
  * defined in the PHP standard library:
  *
  * <http://us.php.net/manual/en/class.arrayaccess.php>
  * <http://us.php.net/manual/en/class.countable.php>
+ * <http://us.php.net/manual/en/jsonserializable.jsonserialize.php>
  *
  * That means you can use any array functions with an instance of this class,
  * including `count($arr)`.
