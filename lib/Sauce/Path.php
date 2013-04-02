@@ -147,6 +147,38 @@ class Path
 
         return @rmdir($dir);
     }
+
+	/* List and filter contents given absolute path.
+	 * 
+	 * Takes an absolute path and an optional filter method.
+	 * By default, all non-hidden entries are returned.
+	 */
+
+	public static function ls ($path, $fn = null)
+	{
+		if (!static::is_absolute($path)) {
+			throw new \Exception('Supplied path is not absolute.');
+		}
+
+		if ($fn === null) {
+			$fn = function ($entry) {
+				return substr($entry, 0, 1) != '.';
+			};
+		}
+
+		$entries = scandir($path);
+
+		return V($entries)->select($closure);
+	}
+
+	/* Returns whether or not the given path is absolute.
+	 *
+	 * Works on Unix/Linux and Windows platforms.
+	 */
+	public static function is_absolute ($path)
+	{
+		return preg_match("/^(?:\/|\\|\w\:\\\).*$/", $path) === 1;
+	}
 }
 
 ?>
