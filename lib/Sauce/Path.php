@@ -168,7 +168,7 @@ class Path
 
 		$entries = scandir($path);
 
-		return V($entries)->select($closure);
+		return V($entries)->select($fn);
 	}
 
 	/* Returns whether or not the given path is absolute.
