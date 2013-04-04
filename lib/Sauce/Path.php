@@ -179,6 +179,16 @@ class Path
 	{
 		return preg_match("/^(?:\/|\\|\w\:\\\).*$/", $path) === 1;
 	}
+
+	/* Proxy method for PHP's pathinfo function.
+	 *
+	 * This was added to have an Object instance as return value.
+	 * There might also be more info added in the future.
+	 */
+	public static function info ($path)
+	{
+		return Ar(pathinfo($path));
+	}
 }
 
 ?>
