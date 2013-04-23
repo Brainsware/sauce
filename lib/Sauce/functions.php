@@ -111,6 +111,48 @@ function Ar ()
 	return new \Sauce\Object($data, true);
 }
 
+/* S creates a \Sauce\String instance, appends all given arguments and returns
+ * the result.
+ *
+ * TODO: Examples
+ */
+function S ()
+{
+	$data = func_get_args();
+	$string = '';
+
+	if (count($data) > 0) {
+		$string = $data[0];
+	}
+
+	$object = new \Sauce\String($string);
+
+	if (count($data) > 1) {
+		for ($i = 1; $i++; $i < count($data)) {
+			$object->appendF($data[$i]);
+		}
+	}
+
+	return $object;
+}
+
+/* Sv creates a Vector instance, pushes all given arguments as new String
+ * instances and returns it.
+ *
+ * TODO: Examples
+ */
+function Vs ()
+{
+	$strings = func_get_args();
+	$vector = V();
+
+	foreach ($data as $string) {
+		$vector->push(S($string));
+	}
+
+	return $vector;
+}
+
 /* ## is\_an\_array($var)
  *
  * Check whether a given variable either really is an array, a `Sauce\Object`
@@ -139,8 +181,19 @@ function is_an_array ($var)
 	return is_array($var) || $var instanceof \Sauce\Object || $var instanceof \ArrayAccess;
 }
 
+/* Check whether a given variable is a string or an instance of String
+ *
+ * TODO: Examples
+ */ 
+function is_a_string ($string)
+{
+	return is_string($string) || $string instanceof \Sauce\String;
+}
+
 /* Check whether given variable is set and not null; basically mimicking Ruby's
  * 'or equals' operator (||=).
+ *
+ * TODO: Examples
  */
 function or_equals ($var, $value)
 {
@@ -149,8 +202,8 @@ function or_equals ($var, $value)
 
 /* ## dump(...)
  *
- * Takes arbitrary arguments and outputs them via `var_dump()`, wrapped inside
- * a `<pre></pre>` tag.
+ * Takes arbitrary arguments and outputs them via `var_dump()`. If not run in
+ * a CLI, the result is wrapped with '<pre></pre>' tags.
  */
 function dump ()
 {
