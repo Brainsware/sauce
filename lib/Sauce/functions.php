@@ -224,9 +224,7 @@ function is_cli()
 	return php_sapi_name() == 'cli';
 }
 
-/* Check whether the application server running PHP is in fact the built-in
- * server.
- */
+/* Check whether the application server running PHP is the built-in server. */
 function is_cli_server () {
 	return (php_sapi_name() == 'cli-server');
 }
