@@ -305,4 +305,17 @@ function http_method () {
 	return strtolower($method);
 }
 
+/* Return whether or not given object or class has a method defined.
+ *
+ * If an object is given, #method_exists is called. If a class is given,
+ * #get_class_methods is used.
+ */
+function has_method ($object, $method) {
+	if (!is_object($object)) {
+		return V(get_class_methods($object))->include($method);
+	}
+
+	return method_exists($object, $method);
+}
+
 ?>
