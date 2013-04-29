@@ -20,14 +20,24 @@
 require realpath(__DIR__) . '/../vendor/autoload.php';
 
 /* Should is a class for general asserts and to check whether code throws or
- * does not throw exceptions of given type as expected. */
+ * does not throw exceptions of given type as expected.
+ *
+ * TODO: Examples
+ */
 class Should
 {
 	protected $results;
+	protected $name;
 
-	public function __construct ($name, $results)
+	public function __construct ($name, $results = [])
 	{
-		$this->results = $results;
+		$this->name = $name;
+		$this->results = V($results);
+	}
+
+	public function name ()
+	{
+		return $this->name;
 	}
 
 	public function results ()
@@ -180,16 +190,14 @@ class Should
 	}
 }
 
-$results = V();
-
-$should = new Should('String class', $results);
+$should = new Should('String class');
 
 $should->throw('Argument contract __construct', 'An InvalidArgumentException should be thrown',
 	'InvalidArgumentException',
 	function () { new \Sauce\String(0); }
 );
 
-$should->assert('String stored internally', 'Passing a string stores that string internally in the object',
+$should->assert('String stored internally', 'Passing a string to __construct stores that string internally in the object',
 	function () {
 		$string = 'abc';
 		$s = new \Sauce\String($string);
@@ -198,14 +206,26 @@ $should->assert('String stored internally', 'Passing a string stores that string
 	}
 );
 
-$should->assert('Should fail!', '...', function () { return false; });
+$should->assert('String instance stored internally', 'Passing a String instance to __construct copies over the stored string',
+	function () {
+		$string = 'abc';
+
+		$s1 = new \Sauce\String($string);
+		$s2 = new \sauce\String($s1);
+
+		return $s2->to_s() === $string;
+	}
+);
 
 $paint = new \Sauce\CliColors();
 
-foreach ($should->results()->to_array() as $i => $result) {
-	$success = $result->success ? $paint::green('PASSED') : $paint::red('FAILED');
+printf("%d..%d\n", 1, $should->results()->count());
+printf("# %s:\n", $should->name());
 
-	printf("(%d) %-50s %s\n", ($i + 1), $result->name, $success);
+foreach ($should->results()->to_array() as $i => $result) {
+	$success = $result->success ? $paint::green('ok') : $paint::red('not ok');
+ 
+	printf("%s %d - %s\n", $success, ($i + 1), $result->name, $success);
 }
 
 
