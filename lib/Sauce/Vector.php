@@ -60,6 +60,10 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 			$data = $data->to_array();
 		}
 
+		if (empty($data)) {
+			return;
+		}
+
 		foreach ($data as $value) {
 			$this->storage []= $value;
 		}
