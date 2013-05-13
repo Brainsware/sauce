@@ -17,6 +17,8 @@
 
 	"require": { "php": ">= 5.4.0" },
 
+	"require-dev": { "brainsware/grease": "@dev" },
+
 	"autoload": {
 		"psr-0": { "Sauce": "lib/" },
 		"files": [ "lib/Sauce/functions.php" ]
