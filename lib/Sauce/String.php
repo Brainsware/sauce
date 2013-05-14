@@ -211,8 +211,12 @@ class String
 	 */
 	public function append ($string)
 	{
-		if (!is_a_string($needle)) {
+		if (!is_a_string($string)) {
 			throw new \InvalidArgumentException('Argument is not a string');
+		}
+
+		if ($string instanceof self) {
+			$string = $string->to_s();
 		}
 
 		return new String($this->string . $string);
@@ -229,6 +233,14 @@ class String
 	 */
 	public function appendF ($string)
 	{
+		if (!is_a_string($string)) {
+			throw new \InvalidArgumentException('Argument is not a string');
+		}
+
+		if ($string instanceof self) {
+			$string = $string->to_s();
+		}
+
 		$this->string .= $string;
 
 		return $this;

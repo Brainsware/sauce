@@ -34,6 +34,8 @@ class String
 		$this->includes_tests();
 		$this->slice_tests();
 		$this->sliceF_tests();
+		$this->append_tests();
+		$this->appendF_tests();
 	}
 
 	public function construct_tests ()
@@ -358,6 +360,114 @@ class String
 				$a->sliceF(1, 10);
 
 				return $a->equals('orem ipsum');
+			}
+		);
+	}
+
+	public function append_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #append',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->append(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #append',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->append(A());
+			}
+		);
+
+		$this->should->assert(
+			'#append should return an instance of \Sauce\String', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->append(' Lorem; ipsum');
+
+				return $b instanceof \Sauce\String;
+			}
+		);
+
+		$this->should->assert(
+			'#append should return an instance of \Sauce\String holding the former and latter string combined', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->append('ipsum ipsum');
+
+				return $b->equals('Lorem ipsum, lorem ipsum.ipsum ipsum');
+			}
+		);
+
+		$this->should->assert(
+			'Given another instance of \Sauce\String, #append should combine those two and return a new instance of \Sauce\String holding the former and the latter strings combined.', '',
+			function () {
+				$a = S('Lorem ipsum');
+				$b = S(', ipsum lorem.');
+				$c = $a->append($b);
+
+				return $c->equals('Lorem ipsum, ipsum lorem.');
+			}
+		);
+	}
+
+	public function appendF_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #appendF',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->appendF(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #appendF',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->appendF(A());
+			}
+		);
+
+		$this->should->assert(
+			'#appendF should return the same instance of \Sauce\String (this)', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->appendF(' Lorem; ipsum');
+
+				return $b === $a;
+			}
+		);
+
+		$this->should->assert(
+			'#appendF should append the given string to the internally stored string', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->appendF('ipsum ipsum');
+
+				return $a->equals('Lorem ipsum, lorem ipsum.ipsum ipsum');
+			}
+		);
+
+		$this->should->assert(
+			'Given another instance of \Sauce\String, #appendF should append it to the internally stored string.', '',
+			function () {
+				$a = S('Lorem ipsum');
+				$b = S(', ipsum lorem.');
+				$a->appendF($b);
+
+				return $a->equals('Lorem ipsum, ipsum lorem.');
 			}
 		);
 	}
