@@ -365,7 +365,7 @@ class String
 		return V(explode($by, $this->string));
 	}
 
-	/* Splits the stored string by any newline characters and returns the
+	/* Splits the stored string by newline characters and returns the
 	 * result as new Vector instance.
 	 *
 	 * Returns a new Vector instance.

@@ -40,6 +40,8 @@ class String
 		$this->prependF_tests();
 		$this->trim_tests();
 		$this->trimF_tests();
+		$this->split_tests();
+		$this->to_lines_tests();
 	}
 
 	public function construct_tests ()
@@ -686,6 +688,83 @@ class String
 				$a->trimF('!@#$%^&*()_- ');
 
 				return $a->equals('Lorem Ipsum');
+			}
+		);
+	}
+
+	protected function split_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #split',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->split(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #split',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->split(A());
+			}
+		);
+
+		$this->should->assert(
+			'#split should return an instance of \Sauce\Vector', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->split();
+
+				return $b instanceof \Sauce\Vector;
+			}
+		);
+
+		$this->should->assert(
+			'#split should return an instance of \Sauce\Vector holding the seperate strings', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->split();
+
+				return
+					$b->count() === 4 &&
+					$b[0] === 'Lorem' &&
+					$b[1] === 'ipsum,' &&
+					$b[2] === 'lorem' &&
+					$b[3] === 'ipsum.';
+			}
+		);
+	}
+
+	protected function to_lines_tests ()
+	{
+		$this->should->assert(
+			'#to_lines should return an instance of \Sauce\Vector', '',
+			function () {
+				$a = S("Lorem ipsum,\nlorem ipsum.");
+				$b = $a->to_lines();
+
+				return $b instanceof \Sauce\Vector;
+			}
+		);
+
+		$this->should->assert(
+			'#to_lines should return an instance of \Sauce\Vector holding the seperate lines', '',
+			function () {
+				$a = S("Lorem ipsum,\nlorem ipsum.\nLorem ipsum!");
+				$b = $a->to_lines();
+
+				dump($b);
+
+				return
+					$b->count() === 3 &&
+					$b[0] === 'Lorem ipsum,' &&
+					$b[1] === 'lorem ipsum.' &&
+					$b[2] === 'Lorem ipsum!';
 			}
 		);
 	}
