@@ -136,7 +136,7 @@ function S ()
 	return $object;
 }
 
-/* Sv creates a Vector instance, pushes all given arguments as new String
+/* Vs creates a Vector instance, pushes all given arguments as new String
  * instances and returns it.
  *
  * TODO: Examples
@@ -146,7 +146,7 @@ function Vs ()
 	$strings = func_get_args();
 	$vector = V();
 
-	foreach ($data as $string) {
+	foreach ($strings as $string) {
 		$vector->push(S($string));
 	}
 

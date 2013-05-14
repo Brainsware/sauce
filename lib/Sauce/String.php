@@ -107,6 +107,29 @@ class String
 
 		return false !== strpos($this->string, $needle);
 	}
+	
+	/* Returns whether given string (or String instance) is exactly the same
+	 * string.
+	 *
+	 * If given argument is not a string or String instance, an
+	 * InvalidArgumentException is thrown.
+	 *
+	 * Returns boolean.
+	 *
+	 * TODO: Examples
+	 */
+	public function equals ($other)
+	{
+		if (!is_a_string($other)) {
+			throw new \InvalidArgumentException('Argument is not a string');
+		}
+
+		if ($other instanceof self) {
+			return $other->to_s() === $this->string;
+		}
+
+		return $other === $this->string;
+	}
 
 	/* Returns a slice of the stored string as new String instance.
 	 * 
