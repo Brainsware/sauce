@@ -44,7 +44,7 @@ class String
 		$this->to_lines_tests();
 	}
 
-	public function construct_tests ()
+	protected function construct_tests ()
 	{
 		$this->should->throw(
 			'Argument contract __construct',
@@ -232,7 +232,7 @@ class String
 		);
 	}
 
-	public function equals_tests ()
+	protected function equals_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #equals',
@@ -264,7 +264,7 @@ class String
 		);
 	}
 
-	public function slice_tests ()
+	protected function slice_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #slice',
@@ -317,7 +317,7 @@ class String
 		);
 	}
 
-	public function sliceF_tests ()
+	protected function sliceF_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #sliceF',
@@ -370,7 +370,7 @@ class String
 		);
 	}
 
-	public function append_tests ()
+	protected function append_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #append',
@@ -424,7 +424,7 @@ class String
 		);
 	}
 
-	public function appendF_tests ()
+	protected function appendF_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #appendF',
@@ -478,7 +478,7 @@ class String
 		);
 	}
 
-	public function prepend_tests ()
+	protected function prepend_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #prepend',
@@ -532,7 +532,7 @@ class String
 		);
 	}
 
-	public function prependF_tests ()
+	protected function prependF_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #prependF',
@@ -586,7 +586,7 @@ class String
 		);
 	}
 
-	public function trim_tests ()
+	protected function trim_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #trim',
@@ -639,7 +639,7 @@ class String
 		);
 	}
 
-	public function trimF_tests ()
+	protected function trimF_tests ()
 	{
 		$this->should->throw(
 			'Argument contract #trimF',
@@ -757,8 +757,6 @@ class String
 			function () {
 				$a = S("Lorem ipsum,\nlorem ipsum.\nLorem ipsum!");
 				$b = $a->to_lines();
-
-				dump($b);
 
 				return
 					$b->count() === 3 &&
