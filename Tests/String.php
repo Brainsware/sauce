@@ -33,6 +33,7 @@ class String
 		$this->ends_with_tests();
 		$this->includes_tests();
 		$this->slice_tests();
+		$this->sliceF_tests();
 	}
 
 	public function construct_tests ()
@@ -284,6 +285,79 @@ class String
 			function () {
 				$a = S('Lorem ipsum, lorem ipsum.');
 				$a->slice(A(), 10);
+			}
+		);
+
+		$this->should->assert(
+			'#slice should return an instance of \Sauce\String', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->slice(0, 10);
+
+				return $b instanceof \Sauce\String;
+			}
+		);
+
+		$this->should->assert(
+			'#slice should return the correct value', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->slice(1, 10);
+
+				return $b->equals('orem ipsum');
+			}
+		);
+	}
+
+	public function sliceF_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #sliceF',
+			'When passing arguments of type other than integer, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->sliceF('abc', 'def');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #sliceF',
+			'When passing arguments of type other than integer, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->sliceF(0, 'def');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #sliceF',
+			'When passing arguments of type other than integer, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->sliceF(A(), 10);
+			}
+		);
+
+		$this->should->assert(
+			'#sliceF should return the same instance of \Sauce\String (this)', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->sliceF(0, 10);
+
+				return $b === $a;
+			}
+		);
+
+		$this->should->assert(
+			'After calling #sliceF, the object should hold the correct value', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->sliceF(1, 10);
+
+				return $a->equals('orem ipsum');
 			}
 		);
 	}

@@ -45,7 +45,7 @@ class String
 			throw new \InvalidArgumentException('Argument is not a string (' . gettype($string) . ')');
 		}
 
-		if ($string instanceof \Sauce\String) {
+		if ($string instanceof self) {
 			$string = $string->to_s();
 		}
 
@@ -67,7 +67,7 @@ class String
 			throw new \InvalidArgumentException('Argument is not a string');
 		}
 
-		if ($needle instanceof \Sauce\String) {
+		if ($needle instanceof self) {
 			$needle = $needle->to_s();
 		}
 
@@ -89,7 +89,7 @@ class String
 			throw new \InvalidArgumentException('Argument is not a string');
 		}
 
-		if ($needle instanceof \Sauce\String) {
+		if ($needle instanceof self) {
 			$needle = $needle->to_s();
 		}
 
@@ -165,7 +165,7 @@ class String
 			throw new \InvalidArgumentException("Invalid end index {$end}");
 		}
 
-		return new String(substr($this->string, $start, $end));
+		return new self(substr($this->string, $start, $end));
 	}
 
 	/* Slices the stored string.
@@ -183,10 +183,14 @@ class String
 	public function sliceF ($start, $end)
 	{
 		if (!is_numeric($start)) {
+			$start = var_export($start, true);
+
 			throw new \InvalidArgumentException("Invalid start index {$start}");
 		}
 
 		if (!is_numeric($end)) {
+			$end = var_export($end, true);
+
 			throw new \InvalidArgumentException("Invalid end index {$end}");
 		}
 
