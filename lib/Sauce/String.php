@@ -306,7 +306,7 @@ class String
 	 */
 	public function trim ($characters = null)
 	{
-		if (!is_a_string($characters)) {
+		if (null !== $characters && !is_a_string($characters)) {
 			throw new \InvalidArgumentException('Argument is not a string');
 		}
 
@@ -333,7 +333,7 @@ class String
 	 */
 	public function trimF ($characters = null)
 	{
-		if (!is_a_string($characters)) {
+		if (null !== $characters && !is_a_string($characters)) {
 			throw new \InvalidArgumentException('Argument is not a string');
 		}
 

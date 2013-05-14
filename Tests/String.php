@@ -38,6 +38,8 @@ class String
 		$this->appendF_tests();
 		$this->prepend_tests();
 		$this->prependF_tests();
+		$this->trim_tests();
+		$this->trimF_tests();
 	}
 
 	public function construct_tests ()
@@ -578,6 +580,112 @@ class String
 				$a->prependF($b);
 
 				return $a->equals(', ipsum lorem.Lorem ipsum');
+			}
+		);
+	}
+
+	public function trim_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #trim',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->trim(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #trim',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->trim(A());
+			}
+		);
+
+		$this->should->assert(
+			'#trim should return an instance of \Sauce\String', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->trim(' Lorem; ipsum');
+
+				return $b instanceof \Sauce\String;
+			}
+		);
+
+		$this->should->assert(
+			'When given no argument, #trim should remove all whitespaces from the beginning and end of the stored string', '',
+			function () {
+				$a = S('  Lorem ipsum                      ');
+				$b = $a->trim();
+
+				return $b->equals('Lorem ipsum');
+			}
+		);
+
+		$this->should->assert(
+			'When given a string as argument, #trim should remove all those characters in the string from the beginning and end of the stored string.', '',
+			function () {
+				$a = S('!@#$%^&*()_-Lorem Ipsum    ');
+				$b = $a->trim('!@#$%^&*()_- ');
+
+				return $b->equals('Lorem Ipsum');
+			}
+		);
+	}
+
+	public function trimF_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #trimF',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->trimF(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #trimF',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->trimF(A());
+			}
+		);
+
+		$this->should->assert(
+			'#trimF should return the same instance of \Sauce\String (this)', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->trimF(' Lorem; ipsum');
+
+				return $b === $a;
+			}
+		);
+
+		$this->should->assert(
+			'When given no argument, #trim should remove all whitespaces from the beginning and end of the stored string', '',
+			function () {
+				$a = S('  Lorem ipsum                      ');
+				$a->trimF();
+
+				return $a->equals('Lorem ipsum');
+			}
+		);
+
+		$this->should->assert(
+			'When given a string as argument, #trim should remove all those characters in the string from the beginning and end of the stored string.', '',
+			function () {
+				$a = S('!@#$%^&*()_-Lorem Ipsum    ');
+				$a->trimF('!@#$%^&*()_- ');
+
+				return $a->equals('Lorem Ipsum');
 			}
 		);
 	}
