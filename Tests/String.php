@@ -36,6 +36,8 @@ class String
 		$this->sliceF_tests();
 		$this->append_tests();
 		$this->appendF_tests();
+		$this->prepend_tests();
+		$this->prependF_tests();
 	}
 
 	public function construct_tests ()
@@ -468,6 +470,114 @@ class String
 				$a->appendF($b);
 
 				return $a->equals('Lorem ipsum, ipsum lorem.');
+			}
+		);
+	}
+
+	public function prepend_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #prepend',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->prepend(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #prepend',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->prepend(A());
+			}
+		);
+
+		$this->should->assert(
+			'#prepend should return an instance of \Sauce\String', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->prepend(' Lorem; ipsum');
+
+				return $b instanceof \Sauce\String;
+			}
+		);
+
+		$this->should->assert(
+			'#prepend should return an instance of \Sauce\String holding the former and latter string combined', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->prepend('ipsum ipsum');
+
+				return $b->equals('ipsum ipsumLorem ipsum, lorem ipsum.');
+			}
+		);
+
+		$this->should->assert(
+			'Given another instance of \Sauce\String, #prepend should combine those two and return a new instance of \Sauce\String holding the former and the latter strings combined.', '',
+			function () {
+				$a = S('Lorem ipsum');
+				$b = S(', ipsum lorem.');
+				$c = $a->prepend($b);
+
+				return $c->equals(', ipsum lorem.Lorem ipsum');
+			}
+		);
+	}
+
+	public function prependF_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #prependF',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->prependF(10);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #prependF',
+			'When passing arguments of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->prependF(A());
+			}
+		);
+
+		$this->should->assert(
+			'#prependF should return the same instance of \Sauce\String (this)', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$b = $a->prependF(' Lorem; ipsum');
+
+				return $b === $a;
+			}
+		);
+
+		$this->should->assert(
+			'#prependF should prepend the given string to the internally stored string', '',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->prependF('ipsum ipsum');
+
+				return $a->equals('ipsum ipsumLorem ipsum, lorem ipsum.');
+			}
+		);
+
+		$this->should->assert(
+			'Given another instance of \Sauce\String, #prependF should prepend it to the internally stored string.', '',
+			function () {
+				$a = S('Lorem ipsum');
+				$b = S(', ipsum lorem.');
+				$a->prependF($b);
+
+				return $a->equals(', ipsum lorem.Lorem ipsum');
 			}
 		);
 	}

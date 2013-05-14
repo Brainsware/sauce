@@ -258,6 +258,14 @@ class String
 	 */
 	public function prepend ($string)
 	{
+		if (!is_a_string($string)) {
+			throw new \InvalidArgumentException('Argument is not a string');
+		}
+
+		if ($string instanceof self) {
+			$string = $string->to_s();
+		}
+
 		return new String($string . $this->string);
 	}
 
@@ -272,6 +280,14 @@ class String
 	 */
 	public function prependF ($string)
 	{
+		if (!is_a_string($string)) {
+			throw new \InvalidArgumentException('Argument is not a string');
+		}
+
+		if ($string instanceof self) {
+			$string = $string->to_s();
+		}
+
 		$this->string = $string . $this->string;
 
 		return $this;
