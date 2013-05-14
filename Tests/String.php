@@ -31,39 +31,8 @@ class String
 		$this->equals_tests();
 		$this->starts_with_tests();
 		$this->ends_with_tests();
-
-	}
-
-	public function equals_tests ()
-	{
-		$this->should->throw(
-			'Argument contract #equals',
-			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
-			'InvalidArgumentException',
-			function () {
-				$a = S('abc');
-				$a->equals(0);
-			}
-		);
-
-		$this->should->assert(
-			'String#equals should return true on passing an identical string', '',
-			function () {
-				$s = S('abc');
-
-				return $s->equals('abc');
-			}
-		);
-
-		$this->should->assert(
-			'String#equals should return true on passing \Sauce\String instance with an identical string stored', '',
-			function () {
-				$a = S('abc');
-				$b = S('abc');
-
-				return $a->equals($b);
-			}
-		);
+		$this->includes_tests();
+		$this->slice_tests();
 	}
 
 	public function construct_tests ()
@@ -216,11 +185,105 @@ class String
 		);
 
 		$this->should->assert(
-			'#ends_with should return true on passing a string that is included and at the beginning', '',
+			'#ends_with should return true on passing a string that is included and at the end', '',
 			function () {
 				$s = S('Lorem ipsum lorem ipsum');
 
 				return true === $s->ends_with('ipsum');
+			}
+		);
+	}
+
+	protected function includes_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #includes', '',
+			'InvalidArgumentException',
+			function () {
+				S('abc')->includes(0);
+			}
+		);
+
+		$this->should->assert(
+			'#includes should return false on passing a string that is not included', '',
+			function () {
+				$s = S('Lorem ipsum lorem ipsum');
+
+				return false === $s->includes('abc');
+			}
+		);
+
+		$this->should->assert(
+			'#includes should return true on passing a string that is included', '',
+			function () {
+				$s = S('Lorem ipsum lorem ipsum');
+
+				return true === $s->includes('ipsum');
+			}
+		);
+	}
+
+	public function equals_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #equals',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abc');
+				$a->equals(0);
+			}
+		);
+
+		$this->should->assert(
+			'String#equals should return true on passing an identical string', '',
+			function () {
+				$s = S('abc');
+
+				return $s->equals('abc');
+			}
+		);
+
+		$this->should->assert(
+			'String#equals should return true on passing \Sauce\String instance with an identical string stored', '',
+			function () {
+				$a = S('abc');
+				$b = S('abc');
+
+				return $a->equals($b);
+			}
+		);
+	}
+
+	public function slice_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #slice',
+			'When passing arguments of type other than integer, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->slice('abc', 'def');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #slice',
+			'When passing arguments of type other than integer, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->slice(0, 'def');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #slice',
+			'When passing arguments of type other than integer, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('Lorem ipsum, lorem ipsum.');
+				$a->slice(A(), 10);
 			}
 		);
 	}

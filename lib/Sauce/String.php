@@ -154,10 +154,14 @@ class String
 	public function slice ($start, $end)
 	{
 		if (!is_numeric($start)) {
+			$start = var_export($start, true);
+
 			throw new \InvalidArgumentException("Invalid start index {$start}");
 		}
 
 		if (!is_numeric($end)) {
+			$end = var_export($end, true);
+
 			throw new \InvalidArgumentException("Invalid end index {$end}");
 		}
 
