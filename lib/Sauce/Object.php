@@ -84,7 +84,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 			return;
 		}
 		
-		if (is_a($data, '\Sauce\Object')) {
+		if ($data instanceof self)) {
 		    $data = $data->storage;
 		}
 
@@ -248,7 +248,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 
 		foreach ($args as $arg) {
 			if (is_an_array($arg)) {
-				if (is_a($arg, '\Sauce\Object')) {
+				if ($arg instance of self)) {
 					$arg = $arg->to_array();
 				}
 
@@ -276,7 +276,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 
 		foreach ($args as $arg) {
 			if (is_an_array($arg)) {
-				if (is_a($arg, '\Sauce\Object')) {
+				if ($arg instanceof self)) {
 					$arg = $arg->to_array();
 				}
 
