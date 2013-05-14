@@ -56,11 +56,21 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	{
 		$this->storage = [];
 
-		if (is_a($data, 'Sauce\Vector')) {
+		if ($data instanceof self) {
 			$data = $data->to_array();
 		}
 
+		if ($data instanceof \Sauce\Object) {
+			$data = [ $data ];
+		}
+
 		if (empty($data)) {
+			return;
+		}
+
+		if (!is_an_array($data)) {
+			$this->storage []= $data;
+
 			return;
 		}
 
