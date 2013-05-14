@@ -27,6 +27,7 @@ class String
 	{
 		$this->construct_tests();
 		$this->shortcut_tests();
+		$this->string_check_tests();
 		$this->equals_tests();
 	}
 
@@ -132,6 +133,34 @@ class String
 
 				return $a[0]->to_s() === 'abc' && $a[1]->to_s() === 'def';
 			}
+		);
+	}
+
+	protected function string_check_tests ()
+	{
+		$this->should->assert(
+			'is_a_string() should return false on passing an integer', '',
+			function () { return false === is_a_string(0); }
+		);
+
+		$this->should->assert(
+			'is_a_string() should return false on passing an array', '',
+			function () { return false === is_a_string([]); }
+		);
+
+		$this->should->assert(
+			'is_a_string() should return false on passing an object of type other than \Sauce\String', '',
+			function () { return false === is_a_string(A()); }
+		);
+
+		$this->should->assert(
+			'is_a_string() should return true on passing an object of type \Sauce\String', '',
+			function () { return true === is_a_string(S()); }
+		);
+
+		$this->should->assert(
+			'is_a_string() should return true on passing a string', '',
+			function () { return true === is_a_string('abc'); }
 		);
 	}
 }
