@@ -29,6 +29,9 @@ class String
 		$this->shortcut_tests();
 		$this->string_check_tests();
 		$this->equals_tests();
+		$this->starts_with_tests();
+		$this->ends_with_tests();
+
 	}
 
 	public function equals_tests ()
@@ -161,6 +164,64 @@ class String
 		$this->should->assert(
 			'is_a_string() should return true on passing a string', '',
 			function () { return true === is_a_string('abc'); }
+		);
+	}
+
+	protected function starts_with_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #starts_with', '',
+			'InvalidArgumentException',
+			function () {
+				S('abc')->starts_with(0);
+			}
+		);
+
+		$this->should->assert(
+			'#starts_with should return false on passing a string that is not included', '',
+			function () {
+				$s = S('Lorem ipsum lorem ipsum');
+
+				return false === $s->starts_with('abc');
+			}
+		);
+
+		$this->should->assert(
+			'#starts_with should return true on passing a string that is included and at the beginning', '',
+			function () {
+				$s = S('Lorem ipsum lorem ipsum');
+
+				return true === $s->starts_with('Lorem');
+			}
+		);
+	}
+
+	protected function ends_with_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #ends_with', '',
+			'InvalidArgumentException',
+			function () {
+				S('abc')->ends_with(0);
+			}
+		);
+
+		$this->should->assert(
+			'#ends_with should return false on passing a string that is not included', '',
+			function () {
+				$s = S('Lorem ipsum lorem ipsum');
+
+				return false === $s->ends_with('abc');
+			}
+		);
+
+		$this->should->assert(
+			'#ends_with should return true on passing a string that is included and at the beginning', '',
+			function () {
+				$s = S('Lorem ipsum lorem ipsum');
+
+				return true === $s->ends_with('ipsum');
+			}
 		);
 	}
 }

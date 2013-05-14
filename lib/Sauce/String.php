@@ -67,7 +67,11 @@ class String
 			throw new \InvalidArgumentException('Argument is not a string');
 		}
 
-		return 0 === strcmp($this->slice(0, strlen($needle)), $needle);
+		if ($needle instanceof \Sauce\String) {
+			$needle = $needle->to_s();
+		}
+
+		return 0 === strcmp($this->slice(0, strlen($needle))->to_s(), $needle);
 	}
 
 	/* Checks whether the stored string ends with given string.
@@ -85,9 +89,13 @@ class String
 			throw new \InvalidArgumentException('Argument is not a string');
 		}
 
+		if ($needle instanceof \Sauce\String) {
+			$needle = $needle->to_s();
+		}
+
 		$len = strlen($needle);
 
-		return 0 === strcmp($this->slice(-$len, $len), $needle);
+		return 0 === strcmp($this->slice(-$len, $len)->to_s(), $needle);
 	}
 
 	/* Checks whether the stored string includes given string.
