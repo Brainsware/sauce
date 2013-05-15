@@ -52,6 +52,12 @@ class String
 		$this->string = $string;
 	}
 
+	/* Actually act like a string */
+	public function __toString ()
+	{
+		return $this->string;
+	}
+
 	/* Returns the length of the stored string */
 	public function length ()
 	{
