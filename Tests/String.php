@@ -27,7 +27,8 @@ class String
 	{
 		$this->construct_tests();
 		$this->shortcut_tests();
-		$this->string_check_tests();
+		$this->is_a_string_tests();
+		$this->length_tests();
 		$this->equals_tests();
 		$this->starts_with_tests();
 		$this->ends_with_tests();
@@ -117,7 +118,7 @@ class String
 		);
 	}
 
-	protected function string_check_tests ()
+	protected function is_a_string_tests ()
 	{
 		$this->should->assert(
 			'is_a_string() should return false on passing an integer', '',
@@ -142,6 +143,18 @@ class String
 		$this->should->assert(
 			'is_a_string() should return true on passing a string', '',
 			function () { return true === is_a_string('abc'); }
+		);
+	}
+
+	protected function length_tests ()
+	{
+		$this->should->assert(
+			'#length should return the length of the stored string', '',
+			function () {
+				$a = S('abc');
+
+				return 3 === $a->length();
+			}
 		);
 	}
 

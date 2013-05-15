@@ -52,6 +52,12 @@ class String
 		$this->string = $string;
 	}
 
+	/* Returns the length of the stored string */
+	public function length ()
+	{
+		return strlen($this->string);
+	}
+
 	/* Checks whether the stored string starts with given string.
 	 *
 	 * If given argument is not a string or a String instance, an
