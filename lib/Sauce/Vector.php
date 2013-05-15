@@ -95,14 +95,18 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	public function slice ($start, $end)
 	{
 		if (!is_numeric($start)) {
-			throw new \OutOfBoundsException("Invalid start index {$index}");
+			$start = var_export($start, true);
+
+			throw new \OutOfBoundsException("Invalid start index {$start}");
 		}
 
 		if (!is_numeric($end)) {
-			throw new \OutOfBoundsException("Invalid end index {$index}");
+			$end = var_export($end, true);
+
+			throw new \OutOfBoundsException("Invalid end index {$end}");
 		}
 
-		return array_slice($this->storage, $start, ($end - $start));
+		return V(array_slice($this->storage, $start, ($end - $start)));
 	}
 
 	/* Join the strval() of each element of the array with a specified delimiter.
@@ -113,13 +117,19 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	 * 	$a->join(', ');
 	 * 	# => "A, B, C"
 	 */
-	public function join ($delimiter)
+	public function join ($delimiter = ' ')
 	{
+		if (!is_a_string($delimiter)) {
+			$delimiter = var_export($delimiter, true);
+
+			throw new \InvalidArgumentException("Invalid delimiter given: {$delimiter}");
+		}
+
 		$strings = $this->map(function ($v) {
 			return strval($v);
 		});
 
-		return join($delimiter, $strings->to_array());
+		return S(join($delimiter, $strings->to_array()));
 	}
 
 	/* Iterate over all elements given a callback and return the results of
@@ -133,6 +143,10 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 	 */
 	public function map ($callback)
 	{
+		if(!is_callable($callback)) {
+			throw new \InvalidArgumentException('Invalid (not callable) callback given');
+		}
+
 		$result = new self();
 
 		for ($i = 0; $i < $this->count(); $i++) {
