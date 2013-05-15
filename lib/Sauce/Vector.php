@@ -41,9 +41,10 @@ namespace Sauce;
  * boundaries of the stored values. If you try to access or set an index higher
  * or equal to the the current amount of stored values, an exception is thrown.
  */
-class Vector implements \ArrayAccess, \Countable, \JsonSerializable
+class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 {
 	protected $storage;
+	protected $current_index = 0;
 
 	/* Creates a new Vector object taking any kind of data.
 	 *
@@ -78,6 +79,37 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable
 			$this->storage []= $value;
 		}
 	}
+
+	/* Iterator methods */
+	public function current ()
+	{
+		if (!$this->valid()) return null;
+
+		return $this->storage[$this->current_index];
+	}
+
+	public function key ()
+	{
+		return $this->current_index;
+	}
+
+	public function next ()
+	{
+		if ($this->valid()) {
+			$this->current_index++;
+		}
+	}
+
+	public function rewind ()
+	{
+		$this->current_index = 0;
+	}
+
+	public function valid ()
+	{
+		return $this->current_index < $this->count();
+	}
+
 
 	/* Return an actual PHP array.
 	 *
