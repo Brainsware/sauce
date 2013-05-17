@@ -148,9 +148,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 			throw new \InvalidArgumentException("Invalid delimiter given: {$delimiter}");
 		}
 
-		$strings = $this->map(function ($v) {
-			return strval($v);
-		});
+		$strings = $this->map(function ($v) { return strval($v); });
 
 		return S(join($delimiter, $strings->to_array()));
 	}
@@ -175,7 +173,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 		for ($i = 0; $i < $this->count(); $i++) {
 			$value = $callback($this->storage[$i]);
 
-			if ($value) {
+			if (null !== $value) {
 				$result->push($value);
 			}
 		}
@@ -194,6 +192,10 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	 */
 	public function select ($callback)
 	{
+		if(!is_callable($callback)) {
+			throw new \InvalidArgumentException('Invalid (not callable) callback given');
+		}
+
 		return $this->map(function ($v) use ($callback) {
 			if ($callback($v)) {
 				return $v;
@@ -212,6 +214,10 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	 */
 	public function exclude ($callback)
 	{
+		if(!is_callable($callback)) {
+			throw new \InvalidArgumentException('Invalid (not callable) callback given');
+		}
+
 		return $this->map(function ($v) use ($callback) {
 			if (!$callback($v)) {
 				return $v;
@@ -226,15 +232,17 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	 */
 	public function push ($value)
 	{
-		if (is_an_array($value) && !is_a($value, '\Sauce\Object')) {
+		if (is_an_array($value) && !($value instanceof \Sauce\Object)) {
 			foreach ($value as $v) {
 				$this->push($v);
 			}
 
-			return;
+			return null;
 		}
 
 		$this->storage []= $value;
+
+		return null;
 	}
 
 	/* Removes the very last element and returns it. */
@@ -260,18 +268,20 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	/* Prepend given value(s) at the beginning. */
 	public function unshift ($values = [])
 	{
-		if (!is_an_array($values)) {
+		if (!is_an_array($values) || $values instanceof \Sauce\Object) {
 			$values = [ $values ];
 		}
 
 		$values = V($values);
 		$storage = $this->storage;
 
-		foreach ($values->to_array() as $value) {
-			array_unshift($storage, $value);
+		for ($i = ($values->count() - 1); $i >= 0; $i--) {
+			array_unshift($storage, $values[$i]);
 		}
 
 		$this->storage = $storage;
+
+		return null;
 	}
 	/* Alias for #unshift */
 	public function prepend ($values = []) { return $this->unshift($values); }
