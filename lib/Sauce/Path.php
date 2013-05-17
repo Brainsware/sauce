@@ -44,6 +44,13 @@ class Path
 				$arg = explode(self::delimiter, $arg);
 			}
 
+			if (is_an_array($arg)) {
+				foreach ($arg as $fragment) {
+					$paths->push($fragment);
+				}
+				continue;
+			}
+
 			$paths->push($arg);
 		}
 
