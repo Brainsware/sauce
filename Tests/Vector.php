@@ -28,16 +28,62 @@ class Vector
 		$this->interface_tests();
 		$this->construct_tests();
 		$this->iterator_tests();
+		$this->array_access_tests();
 
 		$this->slice_tests();
 		$this->join_tests();
 		$this->map_tests();
 		$this->select_tests();
+		$this->exclude_tests();
 
 		$this->push_tests();
 		$this->pop_tests();
 		$this->shift_tests();
 		$this->unshift_tests();
+
+		$this->includes_tests();
+
+		$this->should->assert(
+			'Calling count() should always return a numeric value', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return is_numeric($a->count());
+			}
+		);
+
+		$this->should->assert(
+			'Calling count() should always return a numeric value', '',
+			function () { return is_numeric(V()->count()); }
+		);
+
+		$this->should->assert(
+			'Calling empty() should always return a boolean value', '',
+			function () { return true === V()->is_empty(); }
+		);
+
+		$this->should->assert(
+			'Calling empty() should always return a boolean value', '',
+			function () { return false === V([ 1, 2, 3 ])->is_empty(); }
+		);
+
+		$this->should->assert(
+			'Calling jsonSerialize() should always return an array (the internal storage)', '',
+			function () {
+				$a = V([ 1, 2, 3 ]);
+
+				return is_array($a->jsonSerialize());
+			}
+		);
+
+		$this->should->assert(
+			'Calling jsonSerialize() should always return an array (the internal storage)', '',
+			function () {
+				$a = V();
+
+				return is_array($a->jsonSerialize());
+			}
+		);
 	}
 
 	protected function interface_tests()
@@ -175,6 +221,149 @@ class Vector
 		$this->should->assert(
 			'In a non-empty (new) \Sauce\Vector instance valid() should return true', '',
 			function () { return true === V([ 1, 2, 3 ])->valid(); }
+		);
+	}
+
+	protected function array_access_tests ()
+	{
+		$this->should->throw(
+			'Calling offsetGet() with a non-numeric index should throw an OutOfBoundsException', '',
+			'OutOfBoundsException',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetGet('abc');
+			}
+		);
+
+		$this->should->throw(
+			'Calling offsetGet() with a numeric index lower than zero should throw an OutOfBoundsException', '',
+			'OutOfBoundsException',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetGet(-100);
+			}
+		);
+
+		$this->should->throw(
+			'Calling offsetGet() with a numeric index higher than or equal to the count of stored values should throw an OutOfBoundsException', '',
+			'OutOfBoundsException',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetGet(100);
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetGet() with a valid numeric index should always return the value at given index', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return 3 === $a->offsetGet(3);
+			}
+		);
+
+		$this->should->throw(
+			'Calling offsetSet() with a non-numeric index should throw an OutOfBoundsException', '',
+			'OutOfBoundsException',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetSet('abc', 'abc');
+			}
+		);
+
+		$this->should->throw(
+			'Calling offsetSet() with a numeric index higher than or equal to the count of stored values should throw an OutOfBoundsException', '',
+			'OutOfBoundsException',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetSet(100, 'abc');
+			}
+		);
+
+		$this->should->throw(
+			'Calling offsetSet() with a numeric index below zero should throw an OutOfBoundsException', '',
+			'OutOfBoundsException',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetSet(-100, 'abc');
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetSet() with a valid numeric index should set the value at given index', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetSet(3, 10);
+
+				return 10 === $a[3];
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetSet() with a valid numeric index should always return null', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return null === $a->offsetSet(3, 10);
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetUnset() should always return the removed value', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return 2 === $a->offsetUnset(2);
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetUnset() should remove the value at given index and update the indexes higher than the removed one (shift them downwards)', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+				$a->offsetUnset(1);
+
+				return
+					3 === $a->count() &&
+					2 === $a[1] &&
+					3 === $a[2];
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetExists should always return true when a given index is valid and holds a value', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return true === $a->offsetExists(1);
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetExists should always return true when given an index higher than the count of stored values', '',
+			function () {
+				$a = V([ 0, 1, 2 ]);
+
+				return false === $a->offsetExists(100);
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetExists should always return true when given an index lower than the zero', '',
+			function () {
+				$a = V([ 0, 1, 2 ]);
+
+				return false === $a->offsetExists(-100);
+			}
+		);
+
+		$this->should->assert(
+			'Calling offsetExists should always return false when given a non-numeric index', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return false === $a->offsetExists('abc');
+			}
 		);
 	}
 
@@ -532,14 +721,41 @@ class Vector
 
 				$a->unshift($b);
 
-				dump($a);
-
 				return
 					6 === $a->count() &&
 					0 === $a[0] &&
 					1 === $a[1] &&
 					2 === $a[2] &&
 					3 === $a[3];
+			}
+		);
+	}
+
+	protected function includes_tests ()
+	{
+		$this->should->assert(
+			'Calling includes() on an empty instance should always return false', '',
+			function () {
+				$a = V();
+				return false === $a->includes(0);
+			}
+		);
+
+		$this->should->assert(
+			'Calling includes() on an instance NOT holding given value should always return false', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return false === $a->includes(10);
+			}
+		);
+
+		$this->should->assert(
+			'Calling includes() on an instance holding given value should always return true', '',
+			function () {
+				$a = V([ 0, 1, 2, 3 ]);
+
+				return true === $a->includes(1);
 			}
 		);
 	}

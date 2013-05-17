@@ -318,7 +318,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 			throw new \OutOfBoundsException('You are trying to access a non-numeric index.');
 		}
 		
-		if ($index >= $this->count()) {
+		if ($index >= $this->count() || $index < 0) {
 			throw new \OutOfBoundsException("Invalid index {$index}");
 		}
 
@@ -339,11 +339,13 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 			throw new \OutOfBoundsException('Out of bounds: you are trying to set a non-numeric index.');
 		}
 
-		if ($index > $this->count()) {
+		if ($index > $this->count() || $index < 0) {
 			throw new \OutOfBoundsException("Invalid index {$index}");
 		}
 
 		$this->storage[$index] = $value;
+
+		return null;
 	}
 
 	/* Remove an element at a given numeric index and return it.
@@ -365,13 +367,10 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 			return array_pop($this->storage);
 		}
 
-		$left = array_slice($this->storage, 0, $index);
+		$new = $this->slice(0, $index - 1);
+		$new->push($this->slice($index, $this->count()));
 
-		for ($i = $index; $i++; ($i + 1) < $this->count()) {
-			$left []= $this->storage[$i + 1];
-		}
-
-		$this->storage = $left;
+		$this->storage = $new->to_array();
 
 		return $value;
 	}
@@ -382,7 +381,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	 */
 	public function offsetExists ($index)
 	{
-		return is_numeric($index) && $index < $this->count();
+		return is_numeric($index) && $index < $this->count() && $index >= 0;
 	}
 
 	/* Returns the number of elements stored. */
