@@ -151,6 +151,47 @@ class String
 		return $other === $this->string;
 	}
 
+	/* Returns a new String instance replacing the search string with the
+	 * replacement string.
+	 *
+	 * If either of the arguments is not a string or an instance of String,
+	 * an InvalidArgumentException is thrown.
+	 */
+	function replace ($search, $replace)
+	{
+		if (!is_a_string($search)) {
+			throw new \InvalidArgumentException('First argument is not a string(' . var_export($search, true) . ')');
+		}
+
+		if (!is_a_string($replace)) {
+			throw new \InvalidArgumentException('Second argument is not a string (' . var_export($replace, true) . ')');
+		}
+
+		$result = str_replace($search, $replace, $this);
+
+		return S($result);
+	}
+
+	/* Replaces the search string with the replacement and stores the result.
+	 *
+	 * If either of the arguments is not a string or an instance of String,
+	 * an InvalidArgumentException is thrown.
+	 */
+	function replaceF ($search, $replace)
+	{
+		if (!is_a_string($search)) {
+			throw new \InvalidArgumentException('First argument is not a string(' . var_export($search, true) . ')');
+		}
+
+		if (!is_a_string($replace)) {
+			throw new \InvalidArgumentException('Second argument is not a string (' . var_export($replace, true) . ')');
+		}
+
+		$this->string = str_replace($search, $replace, $this);
+
+		return $this;
+	}
+
 	/* Returns a slice of the stored string as new String instance.
 	 * 
 	 * The start and end parameters are passed to the PHP function #substr

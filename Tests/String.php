@@ -33,6 +33,8 @@ class String
 		$this->starts_with_tests();
 		$this->ends_with_tests();
 		$this->includes_tests();
+		$this->replace_tests();
+		$this->replaceF_tests();
 		$this->slice_tests();
 		$this->sliceF_tests();
 		$this->append_tests();
@@ -241,6 +243,134 @@ class String
 				$s = S('Lorem ipsum lorem ipsum');
 
 				return true === $s->includes('ipsum');
+			}
+		);
+	}
+
+	protected function replace_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #replace',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->replace(0, 0);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #replace',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->replace(0, 'abc');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #replace',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->replace(S('abc'), 0);
+			}
+		);
+
+		$this->should->assert(
+			'Calling #replace with valid arguments should return a new instance of \Sauce\String', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->replace(S('abc'), 'def');
+
+				return $b instanceof \Sauce\String &&
+					   $b !== $a;
+			}
+		);
+
+		$this->should->assert(
+			'Calling #replace with valid arguments and a non-matching search string should return an instance of \Sauce\String that is equal to the original string', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->replace('456', 'def');
+
+				return $b->equals('abcdef123');
+			}
+		);
+
+		$this->should->assert(
+			'Calling #replace with valid arguments and a matching search string should return an instance of \Sauce\String with the search string replaced', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->replace(S('abc'), 'def');
+
+				return $b->equals('defdef123');
+			}
+		);
+	}
+
+	protected function replaceF_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #replaceF',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->replaceF(0, 0);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #replaceF',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->replaceF(0, 'abc');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #replaceF',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->replaceF(S('abc'), 0);
+			}
+		);
+
+		$this->should->assert(
+			'Calling #replaceF with valid arguments should return the same instance', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->replaceF(S('abc'), 'def');
+
+				return $b instanceof \Sauce\String &&
+					   $b === $a;
+			}
+		);
+
+		$this->should->assert(
+			'Calling #replaceF with valid arguments and a non-matching search string should return the same instance without a change', '',
+			function () {
+				$a = S('abcdef123');
+				$a->replaceF('456', 'def');
+
+				return $a->equals('abcdef123');
+			}
+		);
+
+		$this->should->assert(
+			'Calling #replaceF with valid arguments and a matching search string should return an instance of \Sauce\String with the search string replaceFd', '',
+			function () {
+				$a = S('abcdef123');
+				$a->replaceF(S('abc'), 'def');
+
+				return $a->equals('defdef123');
 			}
 		);
 	}
