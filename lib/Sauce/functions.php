@@ -263,15 +263,17 @@ function path_info () {
 	} else {
 		$path_info = $_SERVER['REQUEST_URI'];
 
-		/* Find out whether the script is located in some other directory than / and
-		 * replace the prefix in the request URI.
-		 */
-		$prefix = join('/', array_filter(explode('/', $_SERVER['SCRIPT_NAME']), function ($item) {
-			return !empty($item) && 'index.php' != $item;
-		}));
+		if ($_SERVER['REQUEST_URI'] !== $_SERVER['SCRIPT_NAME']) {
+			/* Find out whether the script is located in some other directory than / and
+			 * replace the prefix in the request URI.
+			 */
+			$prefix = join('/', array_filter(explode('/', $_SERVER['SCRIPT_NAME']), function ($item) {
+				return !empty($item) && 'index.php' != $item;
+			}));
 
-		if (!empty($prefix)) {
-			$path_info = str_replace($prefix, '', $path_info);
+			if (!empty($prefix)) {
+				$path_info = str_replace($prefix, '', $path_info);
+			}
 		}
 	}
 
