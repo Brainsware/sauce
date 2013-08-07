@@ -261,9 +261,16 @@ function path_info () {
 	if (array_key_exists('PATH_INFO', $_SERVER)) {
 		$path_info = $_SERVER['PATH_INFO'];
 	} else {
-		$path_info = $_SERVER['REQUEST_URI'];
+		$path_info = S($_SERVER['REQUEST_URI']);
 
-		if ($_SERVER['REQUEST_URI'] !== $_SERVER['SCRIPT_NAME']) {
+		/* REQUEST_URI may hold GET parameters that need to be stripped away.
+		 * Otherwise the condition REQUEST_URI !== SCRIPT_NAME will be true even though
+		 * the URI is the same. */
+		if ($path_info->includes('?')) {
+			$path_info = $path_info->split('?')[0];
+		}
+
+		if ($path_info !== $_SERVER['SCRIPT_NAME']) {
 			/* Find out whether the script is located in some other directory than / and
 			 * replace the prefix in the request URI.
 			 */
