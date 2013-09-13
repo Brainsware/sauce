@@ -270,7 +270,7 @@ function path_info () {
 			$path_info = $path_info->split('?')[0];
 		}
 
-		if ($path_info !== $_SERVER['SCRIPT_NAME']) {
+		if (!$path_info->equals($_SERVER['SCRIPT_NAME'])) {
 			/* Find out whether the script is located in some other directory than / and
 			 * replace the prefix in the request URI.
 			 */
@@ -279,9 +279,11 @@ function path_info () {
 			}));
 
 			if (!empty($prefix)) {
-				$path_info = str_replace($prefix, '', $path_info);
+				$path_info->replaceF($prefix, '');
 			}
 		}
+
+		$path_info = $path_info->to_s();
 	}
 
 	// In some cases path info does include the GET parameters
