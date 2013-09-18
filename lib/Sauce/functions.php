@@ -267,7 +267,7 @@ function path_info () {
 		 * Otherwise the condition REQUEST_URI !== SCRIPT_NAME will be true even though
 		 * the URI is the same. */
 		if ($path_info->includes('?')) {
-			$path_info = $path_info->split('?')[0];
+			$path_info = S($path_info->split('?')[0]);
 		}
 
 		if (!$path_info->equals($_SERVER['SCRIPT_NAME'])) {
