@@ -63,7 +63,7 @@ class Path
 		$joined_path = $paths->join(self::delimiter);
 
 		if ($args[0][0] === self::delimiter) {
-			$joined_path = self::delimiter . $joined_path;
+			$joined_path->appendF(self::delimiter);
 		}
 
 		return $joined_path;
