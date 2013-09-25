@@ -236,6 +236,32 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 		return $values;
 	}
 
+	/* Takes a function or an array of keys
+	 *
+	 * Returns all key-value pairs the function returns true for or where the
+	 * keys are in the given array.
+	 */
+	public function select ($fn)
+	{
+		if (!is_callable($fn) && is_an_array($fn)) {
+			$keys = V($fn);
+
+			$fn = function ($key, $value) use ($keys) {
+				return $keys->include($key);
+			};
+		}
+
+		$result = new self();
+
+		foreach ($this->storage as $key => $value) {
+			if ($fn($key, $value)) {
+				$result[$key] = $value;
+			}
+		}
+
+		return $result;
+	}
+
 	/**
 	 * TODO: document parameters
 	 */
