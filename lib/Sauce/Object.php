@@ -247,7 +247,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 			$keys = V($fn);
 
 			$fn = function ($key, $value) use ($keys) {
-				return $keys->include($key);
+				return $keys->includes($key);
 			};
 		}
 
