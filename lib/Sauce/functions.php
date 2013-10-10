@@ -313,8 +313,8 @@ function http_method () {
 		$method = $_REQUEST['_method'];
 	} 
 
-	if (array_key_exists('X-HTTP-METHOD-OVERRIDE', $_SERVER)) {
-		$method = $_SERVER['X-HTTP-METHOD-OVERRIDE'];
+	if (array_key_exists('HTTP_X_HTTP_METHOD_OVERRIDE', $_SERVER)) {
+		$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
 	}
 
 	return strtolower($method);
