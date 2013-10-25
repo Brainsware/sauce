@@ -157,6 +157,22 @@ class String
 		return S($result);
 	}
 
+	/* Returns a new string instance replacing the search string with the
+	 * replacement string but case insentively.
+	 *
+	 * If either of the arguments is not a string or an instance of String,
+	 * an InvalidArgumentException is thrown.
+	 */
+	function ireplace ($search, $replace)
+	{
+		ensure('Search argument',  $search,  is_a_string, __CLASS__, __METHOD__);
+		ensure('Replace argument', $replace, is_a_string, __CLASS__, __METHOD__);
+
+		$result = str_ireplace($search, $replace, $this);
+
+		return S($result);
+	}
+
 	/* Replaces the search string with the replacement and stores the result.
 	 *
 	 * If either of the arguments is not a string or an instance of String,
@@ -168,6 +184,22 @@ class String
 		ensure('Replace argument', $replace, is_a_string, __CLASS__, __METHOD__);
 
 		$this->string = str_replace($search, $replace, $this);
+
+		return $this;
+	}
+
+	/* Replaces the search string with the replacement case insensitively and
+	 * stores the result.
+	 *
+	 * If either of the arguments is not a string or an instance of String,
+	 * an InvalidArgumentException is thrown.
+	 */
+	function ireplaceF ($search, $replace)
+	{
+		ensure('Search argument',  $search,  is_a_string, __CLASS__, __METHOD__);
+		ensure('Replace argument', $replace, is_a_string, __CLASS__, __METHOD__);
+
+		$this->string = str_ireplace($search, $replace, $this);
 
 		return $this;
 	}

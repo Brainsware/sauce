@@ -34,7 +34,9 @@ class String
 		$this->ends_with_tests();
 		$this->includes_tests();
 		$this->replace_tests();
+		$this->ireplace_tests();
 		$this->replaceF_tests();
+		$this->ireplaceF_tests();
 		$this->slice_tests();
 		$this->sliceF_tests();
 		$this->append_tests();
@@ -311,6 +313,70 @@ class String
 		);
 	}
 
+	protected function ireplace_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #ireplace',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->ireplace(0, 0);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #ireplace',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->ireplace(0, 'abc');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #ireplace',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abcdef123');
+				$a->ireplace(S('abc'), 0);
+			}
+		);
+
+		$this->should->assert(
+			'Calling #ireplace with valid arguments should return a new instance of \Sauce\String', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->ireplace(S('abc'), 'def');
+
+				return $b instanceof \Sauce\String &&
+					   $b !== $a;
+			}
+		);
+
+		$this->should->assert(
+			'Calling #ireplace with valid arguments and a non-matching search string should return an instance of \Sauce\String that is equal to the original string', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->ireplace('456', 'def');
+
+				return $b->equals('abcdef123');
+			}
+		);
+
+		$this->should->assert(
+			'Calling #ireplace with valid arguments and a matching search string should return an instance of \Sauce\String with the search string replaced', '',
+			function () {
+				$a = S('abcdef123');
+				$b = $a->ireplace(S('abc'), 'def');
+
+				return $b->equals('defdef123');
+			}
+		);
+	}
+
 	protected function replaceF_tests ()
 	{
 		$this->should->throw(
@@ -369,6 +435,70 @@ class String
 			function () {
 				$a = S('abcdef123');
 				$a->replaceF(S('abc'), 'def');
+
+				return $a->equals('defdef123');
+			}
+		);
+	}
+
+	protected function ireplaceF_tests ()
+	{
+		$this->should->throw(
+			'Argument contract #ireplaceF',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('ABcdef123');
+				$a->ireplaceF(0, 0);
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #ireplaceF',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('ABcdef123');
+				$a->ireplaceF(0, 'abc');
+			}
+		);
+
+		$this->should->throw(
+			'Argument contract #ireplaceF',
+			'When passing an argument of type other than string or an instance of \Sauce\String, an InvalidArgumentException should be thrown.',
+			'InvalidArgumentException',
+			function () {
+				$a = S('abCdef123');
+				$a->ireplaceF(S('abc'), 0);
+			}
+		);
+
+		$this->should->assert(
+			'Calling #ireplaceF with valid arguments should return the same instance', '',
+			function () {
+				$a = S('abCdef123');
+				$b = $a->ireplaceF(S('abc'), 'def');
+
+				return $b instanceof \Sauce\String &&
+					   $b === $a;
+			}
+		);
+
+		$this->should->assert(
+			'Calling #ireplaceF with valid arguments and a non-matching search string should return the same instance without a change', '',
+			function () {
+				$a = S('abcdef123');
+				$a->ireplaceF('456', 'def');
+
+				return $a->equals('abcdef123');
+			}
+		);
+
+		$this->should->assert(
+			'Calling #ireplaceF with valid arguments and a matching search string should return an instance of \Sauce\String with the search string replaceFd', '',
+			function () {
+				$a = S('abcdef123');
+				$a->ireplaceF(S('ABC'), 'def');
 
 				return $a->equals('defdef123');
 			}
