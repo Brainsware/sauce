@@ -88,10 +88,10 @@ class Vector
 
 	protected function interface_tests()
 	{
-		$this->should->implement('\Sauce\Vector should implement ArrayAccess', '', 'ArrayAccess', V());
-		$this->should->implement('\Sauce\Vector should implement Countable', '', 'Countable', V());
-		$this->should->implement('\Sauce\Vector should implement JsonSerializable', '', 'JsonSerializable', V());
-		$this->should->implement('\Sauce\Vector should implement Iterator', '', 'Iterator', V());
+		$this->should->implement('Sauce\Vector should implement ArrayAccess', '', 'ArrayAccess', V());
+		$this->should->implement('Sauce\Vector should implement Countable', '', 'Countable', V());
+		$this->should->implement('Sauce\Vector should implement JsonSerializable', '', 'JsonSerializable', V());
+		$this->should->implement('Sauce\Vector should implement Iterator', '', 'Iterator', V());
 	}
 
 	protected function construct_tests ()
