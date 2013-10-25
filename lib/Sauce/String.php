@@ -41,9 +41,7 @@ class String
 	 */
 	public function __construct ($string = '')
 	{
-		if (!is_a_string($string)) {
-			throw new \InvalidArgumentException('Argument is not a string (' . gettype($string) . ')');
-		}
+		ensure('Argument', $string, is_a_string, __CLASS__, __METHOD__);
 
 		if ($string instanceof self) {
 			$string = $string->to_s();
@@ -75,9 +73,7 @@ class String
 	 */
 	public function starts_with ($needle)
 	{
-		if (!is_a_string($needle)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $needle, is_a_string, __CLASS__, __METHOD__);
 
 		if ($needle instanceof self) {
 			$needle = $needle->to_s();
@@ -97,9 +93,7 @@ class String
 	 */
 	public function ends_with ($needle)
 	{
-		if (!is_a_string($needle)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $needle, is_a_string, __CLASS__, __METHOD__);
 
 		if ($needle instanceof self) {
 			$needle = $needle->to_s();
@@ -121,9 +115,7 @@ class String
 	 */
 	public function includes ($needle)
 	{
-		if (!is_a_string($needle)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $needle, is_a_string, __CLASS__, __METHOD__);
 
 		return false !== strpos($this->string, $needle);
 	}
@@ -140,9 +132,7 @@ class String
 	 */
 	public function equals ($other)
 	{
-		if (!is_a_string($other)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $other, is_a_string, __CLASS__, __METHOD__);
 
 		if ($other instanceof self) {
 			return $other->to_s() === $this->string;
@@ -159,13 +149,8 @@ class String
 	 */
 	function replace ($search, $replace)
 	{
-		if (!is_a_string($search)) {
-			throw new \InvalidArgumentException('First argument is not a string(' . var_export($search, true) . ')');
-		}
-
-		if (!is_a_string($replace)) {
-			throw new \InvalidArgumentException('Second argument is not a string (' . var_export($replace, true) . ')');
-		}
+		ensure('Search argument',  $search,  is_a_string, __CLASS__, __METHOD__);
+		ensure('Replace argument', $replace, is_a_string, __CLASS__, __METHOD__);
 
 		$result = str_replace($search, $replace, $this);
 
@@ -179,13 +164,8 @@ class String
 	 */
 	function replaceF ($search, $replace)
 	{
-		if (!is_a_string($search)) {
-			throw new \InvalidArgumentException('First argument is not a string(' . var_export($search, true) . ')');
-		}
-
-		if (!is_a_string($replace)) {
-			throw new \InvalidArgumentException('Second argument is not a string (' . var_export($replace, true) . ')');
-		}
+		ensure('Search argument',  $search,  is_a_string, __CLASS__, __METHOD__);
+		ensure('Replace argument', $replace, is_a_string, __CLASS__, __METHOD__);
 
 		$this->string = str_replace($search, $replace, $this);
 
@@ -206,17 +186,8 @@ class String
 	 */
 	public function slice ($start, $end)
 	{
-		if (!is_numeric($start)) {
-			$start = var_export($start, true);
-
-			throw new \InvalidArgumentException("Invalid start index {$start}");
-		}
-
-		if (!is_numeric($end)) {
-			$end = var_export($end, true);
-
-			throw new \InvalidArgumentException("Invalid end index {$end}");
-		}
+		ensure('Start', $start, is_numeric, __CLASS__, __METHOD__);
+		ensure('End',   $end,   is_numeric, __CLASS__, __METHOD__);
 
 		return new self(substr($this->string, $start, $end));
 	}
@@ -235,17 +206,8 @@ class String
 	 */
 	public function sliceF ($start, $end)
 	{
-		if (!is_numeric($start)) {
-			$start = var_export($start, true);
-
-			throw new \InvalidArgumentException("Invalid start index {$start}");
-		}
-
-		if (!is_numeric($end)) {
-			$end = var_export($end, true);
-
-			throw new \InvalidArgumentException("Invalid end index {$end}");
-		}
+		ensure('Start', $start, is_numeric, __CLASS__, __METHOD__);
+		ensure('End',   $end,   is_numeric, __CLASS__, __METHOD__);
 
 		$this->string = substr($this->string, $start, $end);
 
@@ -264,9 +226,7 @@ class String
 	 */
 	public function append ($string)
 	{
-		if (!is_a_string($string)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $string, is_a_string, __CLASS__, __METHOD__);
 
 		if ($string instanceof self) {
 			$string = $string->to_s();
@@ -286,9 +246,7 @@ class String
 	 */
 	public function appendF ($string)
 	{
-		if (!is_a_string($string)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $string, is_a_string, __CLASS__, __METHOD__);
 
 		if ($string instanceof self) {
 			$string = $string->to_s();
@@ -311,9 +269,7 @@ class String
 	 */
 	public function prepend ($string)
 	{
-		if (!is_a_string($string)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $string, is_a_string, __CLASS__, __METHOD__);
 
 		if ($string instanceof self) {
 			$string = $string->to_s();
@@ -333,9 +289,7 @@ class String
 	 */
 	public function prependF ($string)
 	{
-		if (!is_a_string($string)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $string, is_a_string, __CLASS__, __METHOD__);
 
 		if ($string instanceof self) {
 			$string = $string->to_s();
@@ -359,8 +313,8 @@ class String
 	 */
 	public function trim ($characters = null)
 	{
-		if (null !== $characters && !is_a_string($characters)) {
-			throw new \InvalidArgumentException('Argument is not a string');
+		if (is_not_null($characters)) {
+			ensure('Argument', $characters, is_a_string, __CLASS__, __METHOD__);
 		}
 
 		$trimmed = '';
@@ -386,8 +340,8 @@ class String
 	 */
 	public function trimF ($characters = null)
 	{
-		if (null !== $characters && !is_a_string($characters)) {
-			throw new \InvalidArgumentException('Argument is not a string');
+		if (is_not_null($characters)) {
+			ensure('Argument', $characters, is_a_string, __CLASS__, __METHOD__);
 		}
 
 		if (null !== $characters) {
@@ -411,9 +365,7 @@ class String
 	 */
 	public function split ($by = ' ')
 	{
-		if (!is_a_string($by)) {
-			throw new \InvalidArgumentException('Argument is not a string');
-		}
+		ensure('Argument', $by, is_a_string, __CLASS__, __METHOD__);
 
 		return V(explode($by, $this->string));
 	}

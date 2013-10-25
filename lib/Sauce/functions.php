@@ -190,6 +190,13 @@ function is_a_string ($string)
 	return is_string($string) || $string instanceof \Sauce\String;
 }
 
+/* Check whether given variable is not null. This is just a proxy method so one
+ * can use !is_null as callback in #ensure. */
+function is_not_null ($value)
+{
+	return !is_null($value);
+}
+
 /* Check whether given variable is set and not null; basically mimicking Ruby's
  * 'or equals' operator (||=).
  *
@@ -218,6 +225,12 @@ function dump ()
 	if (!is_cli()) echo '</pre>';
 }
 
+/* This is a shorthand function for var_export($value, true) and returns a string */
+function sdump ($value)
+{
+	return var_export($value, true);
+}
+
 /* Check whether PHP is run from an application server or the command line. */
 function is_cli()
 {
@@ -231,6 +244,8 @@ function is_cli_server () {
 
 /* Splits a URI into chunks seperated by '/' and returns them as array. */
 function split_uri ($uri) {
+	ensure('URI', $uri, is_a_string, __FUNCTION__);
+
 	$splitted_uri = explode('/', $uri);
 
 	// Remove empty strings from beginning and end
@@ -331,6 +346,44 @@ function has_method ($object, $method) {
 	}
 
 	return method_exists($object, $method);
+}
+
+
+/* Utility function for method contracts: throws an InvalidArgumentException
+ * in case given callback returns false on given value.
+ *
+ * The parameters name, value and fn are mandatory, class and method names do
+ * not have to be supplied. In case the fourth argument is given but the last
+ * is not, it is assumed as method/function name.
+ *
+ * This is practically a shorthand for:
+ *
+ * if (!is_something($value) {
+ *   throw new InvalidArgumentException(...);
+ * }
+ *
+ * ensure('Argument', $value, is_something);
+ */
+function ensure ($name, $value, $fn, $class = null, $method = null)
+{
+	if (!is_callable($fn)) {
+		throw new InvalidArgumentException("#ensure: Given callback is not callable: " . sdump($fn));
+	}
+
+	if (!is_a_string($name)) {
+		throw new InvalidArgumentException("#ensure: Given argument name is not a string: " . sdump($fn));
+	}
+
+	// TODO: Contract for $value
+
+	if (is_not_null($class) && is_null($method)) {
+		$method = $class;
+		$class = null;
+	}
+
+	if (!$fn($value)) {
+		throw new InvalidArgumentException("{$class}#{$method}: {$name} does not comply argument contract " . sdump($fn) . ": " . sdump($value) . ')');
+	}
 }
 
 ?>
