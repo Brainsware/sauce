@@ -19,11 +19,14 @@ Provided classes/traits:
 Provided global functions:
 
 * `dump()` - Replacement for `var_dump()` that can take arbitrary data; when not on the command line, this function will wrap the result in a `<pre>` tag.
+* `sdump()` - Replacement for `var_export($value, true)`
 * `V()` - Create a new `Vector` from given data
 * `A()` - Create a new `Object` from given data
 * `Ar()` - Recursively create `Object` instances from given data (arrays in arrays will be also instantiated as `Object`)
 * `S()` - Create a `String` instance from given string
 * `Vs()` - Creates a `Vector` instance with given strings, pushing each argument as `String` instance onto the Vector.
+* `ensure()` - Define a function/method contract, throws an InvalidArgumentException when contract is not fulfilled. See comments on that function for documentation.
+* `is_not_null()` - Check whether given data is not null
 * `is_an_array()` - Check whether given data is an array or an instance of any class extending `Object` or implementing `ArrayAccess` 
 * `is_a_string()` - Check whether given data is a string or an instance of `String`
 * `is_cli()` - Check whether the current environment is the command line interface or CGI/mod\_php
