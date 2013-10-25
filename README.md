@@ -1,7 +1,7 @@
 Sauce is a general purpose library providing containers and functions
-that ease development in PHP. Master always reflects the featureset of
-current PHP version. Right now this is 5.4.x. For older versions
-checkout the branches.
+that ease development in PHP.
+
+Currently Sauce is written and tested for PHP 5.4.x.
 
 Provided classes:
 
