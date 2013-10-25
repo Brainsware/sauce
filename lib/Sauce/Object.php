@@ -247,7 +247,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 			$keys = V($fn);
 
 			$fn = function ($key, $value) use ($keys) {
-				return $keys->include($key);
+				return $keys->includes($key);
 			};
 		}
 
@@ -286,6 +286,9 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 					}
 				}
 			} else {
+				/* XXX: Do we really support this? Object instances are
+				 *      supposed to be hashes, Vector instances can be appended
+				 *      to. */
 				$a->storage []= $arg;
 			}
 		}
@@ -310,6 +313,9 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 					$this->offsetSet(strtolower($key), $value);
 				}
 			} else {
+				/* XXX: Do we really support this? Object instances are
+				 *      supposed to be hashes, Vector instances can be appended
+				 *      to. */
 				$this->storage []= $arg;
 			}
 		}
