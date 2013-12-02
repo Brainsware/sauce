@@ -244,7 +244,7 @@ function is_cli_server () {
 
 /* Splits a URI into chunks seperated by '/' and returns them as array. */
 function split_uri ($uri) {
-	ensure('URI', $uri, is_a_string, __FUNCTION__);
+	ensure('URI', $uri, 'is_a_string', __FUNCTION__);
 
 	$splitted_uri = explode('/', $uri);
 
