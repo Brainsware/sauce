@@ -125,7 +125,7 @@ function S ()
 		$string = $data[0];
 	}
 
-	$object = new \Sauce\String($string);
+	$object = new \Sauce\SString($string);
 
 	if (count($data) > 1) {
 		for ($i = 1; $i++; $i < count($data)) {

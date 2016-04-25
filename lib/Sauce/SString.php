@@ -29,7 +29,7 @@ namespace Sauce;
  *
  * TODO: Examples
  */
-class String
+class SString
 {
 	// Internal storage
 	private $string = '';
