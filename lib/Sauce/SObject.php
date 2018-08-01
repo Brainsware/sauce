@@ -45,7 +45,7 @@ namespace Sauce;
  *
  * Example:
  *
- * 		> $a = new Object();
+ * 		> $a = new SObject();
  * 		> $a->foo = 'foo';
  * 		> dump($a['foo']);
  * 		# => string(3) "foo"
@@ -64,13 +64,13 @@ namespace Sauce;
  * function in a seperate variable or use call_user_func. `CallableProperty`
  * also binds the function to the `Object` instance.
  */
-class Object implements \ArrayAccess, \Countable, \JsonSerializable
+class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 {
 	use CallableProperty;
 
 	protected $storage;
 
-	/* Creates a new Object instance, taking any kind of data.
+	/* Creates a new SObject instance, taking any kind of data.
 	 *
 	 * Additionally, the second parameter $recursive can be used to transform
 	 * nested PHP built-in arrays into nested Object instances.
@@ -98,7 +98,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 			}
 
 			if ($recursive && is_an_array($value)) {
-				$this->storage[$key] = new Object($value, true);
+				$this->storage[$key] = new SObject($value, true);
 			} else {
 				$this->storage[$key] = $value;
 			}
@@ -268,7 +268,7 @@ class Object implements \ArrayAccess, \Countable, \JsonSerializable
 	public function merge ()
 	{
 		$args = func_get_args();
-		$a    = new Object();
+		$a    = new SObject();
 
 		// TODO: fix for actual Object
 

@@ -57,7 +57,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	{
 		$this->storage = [];
 
-		if ($data instanceof \Sauce\Object) $data = [ $data ]; 
+		if ($data instanceof \Sauce\SObject) $data = [ $data ]; 
 		if (empty($data))                   return; 
 
 		if (!is_an_array($data)) {
@@ -232,7 +232,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	 */
 	public function push ($value)
 	{
-		if (is_an_array($value) && !($value instanceof \Sauce\Object)) {
+		if (is_an_array($value) && !($value instanceof \Sauce\SObject)) {
 			foreach ($value as $v) {
 				$this->push($v);
 			}
@@ -268,7 +268,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	/* Prepend given value(s) at the beginning. */
 	public function unshift ($values = [])
 	{
-		if (!is_an_array($values) || $values instanceof \Sauce\Object) {
+		if (!is_an_array($values) || $values instanceof \Sauce\SObject) {
 			$values = [ $values ];
 		}
 

@@ -5,7 +5,7 @@ Currently Sauce is written and tested for PHP 5.4.x.
 
 Provided classes/traits:
 
-* `Sauce\Object` - A simple key-value store
+* `Sauce\SObject` - A simple key-value store
 * `Sauce\Vector` - A classic array with ordered integer keys
 * `Sauce\String` - A simple string representation with utility methods
 * `Sauce\Immutable` - An abstract class implementing `ArrayAccess` but denying access to any set methods

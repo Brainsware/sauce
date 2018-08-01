@@ -43,14 +43,14 @@ function V()
 /* ## A(...)
  *
  * `A` takes all given arguments, no matter what type they are, and stuffs them
- * into a new `Sauce\Object`.
+ * into a new `Sauce\SObject`.
  *
- * This is basically a shortcut function for `new \Sauce\Object(array $args)`.
+ * This is basically a shortcut function for `new \Sauce\SObject(array $args)`.
  *
  * Examples:
  *
  *     > A(1, 2, 3, 4);
- *     # => object(Sauce\Object)#1 (4) {
+ *     # => object(Sauce\SObject)#1 (4) {
  *              ["0"]=> int(1)
  *              ["1"]=> int(2)
  *              ["2"]=> int(3)
@@ -58,7 +58,7 @@ function V()
  *     }
  *
  *     > A(1, array('Hello!' => 'World?'), 'foo')
- *     # => object(Sauce\Object)#1 (3) {
+ *     # => object(Sauce\SObject)#1 (3) {
  *           ["0"]=> int(1)
  *           ["1"]=> array(1) {
  *               ["Hello!"]=> string(6) "World?"
@@ -67,7 +67,7 @@ function V()
  *     }
  *
  *     > A(array(1 => 2, 2 => 3));
- *     # => object(Sauce\Object)#1 (2) {
+ *     # => object(Sauce\SObject)#1 (2) {
  *           ["1"]=> int(2)
  *           ["3"]=> int(4)
  *     }
@@ -80,21 +80,21 @@ function A ()
 		$data = $data[0];
 	}
 
-	return new \Sauce\Object($data);
+	return new \Sauce\SObject($data);
 }
 
 /* ## Ar(...)
  *
- * `Ar` works exactly the same as `A` but lets the `Sauce\Object` constructor
+ * `Ar` works exactly the same as `A` but lets the `Sauce\SObject` constructor
  * build its data structure in a recursive way. This means every nested array
- * is converted to a `Sauce\Object`.
+ * is converted to a `Sauce\SObject`.
  *
  * Examples:
  *
  *     > Ar(1, array('Hello' => 'world!'), 'foo');
- *     # => object(Sauce\Object)#2 (3) {
+ *     # => object(Sauce\SObject)#2 (3) {
  *         ["0"]=> int(1)
- *         ["1"]=> object(Sauce\Object)#1 (1) {
+ *         ["1"]=> object(Sauce\SObject)#1 (1) {
  *             ["Hello"]=> string(6) "world!"
  *         }
  *         ["2"]=> string(3) "foo"
@@ -108,7 +108,7 @@ function Ar ()
 		$data = $data[0];
 	}
 
-	return new \Sauce\Object($data, true);
+	return new \Sauce\SObject($data, true);
 }
 
 /* S creates a \Sauce\String instance, appends all given arguments and returns
@@ -155,7 +155,7 @@ function Vs ()
 
 /* ## is\_an\_array($var)
  *
- * Check whether a given variable either really is an array, a `Sauce\Object`
+ * Check whether a given variable either really is an array, a `Sauce\SObject`
  * instance, or any other object that implements `ArrayAccess`.
  *
  * Examples:
@@ -178,7 +178,7 @@ function Vs ()
  */
 function is_an_array ($var)
 {
-	return is_array($var) || $var instanceof \Sauce\Object || $var instanceof \ArrayAccess;
+	return is_array($var) || $var instanceof \Sauce\SObject || $var instanceof \ArrayAccess;
 }
 
 /* Check whether a given variable is a string or an instance of String

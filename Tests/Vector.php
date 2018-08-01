@@ -117,9 +117,9 @@ class Vector
 		$this->should->assert(
 			'The constructor should take an argument of arbitrary type that is not an array or an instance of \Sauce\Vector and store it in an internal array', '',
 			function () {
-				$a = new \Sauce\Vector(new \Sauce\Object());
+				$a = new \Sauce\Vector(new \Sauce\SObject());
 
-				return $a[0] instanceof \Sauce\Object;
+				return $a[0] instanceof \Sauce\SObject;
 			}
 		);
 
@@ -612,7 +612,7 @@ class Vector
 		);
 
 		$this->should->assert(
-			'Calling push() with any array type (except \Sauce\Object) as argument should add the contained values to the end of the internal storage array', '',
+			'Calling push() with any array type (except \Sauce\SObject) as argument should add the contained values to the end of the internal storage array', '',
 			function () {
 				$a = V([ 1, 2, 3, 4 ]);
 				$b = V([ 5, 6, 7, 8 ]);
@@ -629,14 +629,14 @@ class Vector
 		);
 
 		$this->should->assert(
-			'Calling push() with a \Sauce\Object as argument should add that object to the end of the internal storage array', '',
+			'Calling push() with a \Sauce\SObject as argument should add that object to the end of the internal storage array', '',
 			function () {
 				$a = V([ 0, 1, 2 ]);
 				$b = A([]);
 
 				$a->push($b);
 
-				return $a[3] instanceof \Sauce\Object;
+				return $a[3] instanceof \Sauce\SObject;
 			}
 		);
 	}
