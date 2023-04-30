@@ -83,7 +83,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 			$this->storage[0] = $data;
 			return;
 		}
-		
+
 		if ($data instanceof self) {
 		    $data = $data->storage;
 		}
@@ -106,7 +106,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 	}
 
 	/* Return whether given key exists. */
-	public function offsetExists ($key)
+	public function offsetExists ($key): bool
 	{
 		return array_key_exists($key, $this->storage);
 	}
@@ -122,7 +122,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 	/* Implementation of ArrayAccess#offsetGet; returns the value of a given
 	 * key.
 	 */
-	public function offsetGet ($key)
+	public function offsetGet ($key): mixed
 	{
 		if ($this->offsetExists($key)) {
 			return $this->storage[$key];
@@ -131,12 +131,30 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 		return null;
 	}
 
+	public static function __callStatic($name, $arguments)
+	{
+		$sobject = new self();
+
+		switch ($name) {
+			case 'select': return $sobject->_select(...$arguments);
+
+			default: throw new \Exception();
+		}
+	}
+
+	public function __call($method, $arguments)
+	{
+		switch ($method) {
+			case 'select': return $this->_select(...$arguments);
+		}
+	}
+
 	/* Magic method to mimic array index access, also an alias for #offsetGet */
 	public function __get ($key) { return $this->offsetGet($key); }
 
-	
+
 	/* Implementation of ArrayAccess#offsetSet; sets a value for a given key. */
-	public function offsetSet ($key, $value)
+	public function offsetSet ($key, $value): void
 	{
 		$this->storage[$key] = $value;
 	}
@@ -145,9 +163,9 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 	 * #offsetSet
 	 */
 	public function __set ($key, $value) { return $this->offsetSet($key, $value); }
-	
+
 	/* Remove a given key and its associated value. */
-	public function offsetUnset ($key)
+	public function offsetUnset ($key): void
 	{
 		if ($this->offsetExists($key)) {
 			unset($this->storage[$key]);
@@ -158,7 +176,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 	public function __unset ($key) { return $this->offsetUnset($key); }
 
 	/* Returns the number of stored key-value pairs. */
-	public function count ()
+	public function count (): int
 	{
 		return count($this->storage);
 	}
@@ -241,7 +259,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 	 * Returns all key-value pairs the function returns true for or where the
 	 * keys are in the given array.
 	 */
-	public function select ($fn)
+	public function _select ($fn)
 	{
 		if (!is_callable($fn) && is_an_array($fn)) {
 			$keys = V($fn);
@@ -322,7 +340,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 
 		return $this;
 	}
-	
+
 	/* Return an actual PHP array.
 	 *
 	 * NOTE: This method has to be used for foreach loops.
@@ -338,7 +356,7 @@ class SObject implements \ArrayAccess, \Countable, \JsonSerializable
 	/* Implementation of JsonSerializable; returns the internal storage - a PHP
 	 * built-in array.
 	 */
-	public function jsonSerialize ()
+	public function jsonSerialize (): mixed
 	{
 		return $this->storage;
 	}

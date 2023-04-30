@@ -57,8 +57,8 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 	{
 		$this->storage = [];
 
-		if ($data instanceof \Sauce\SObject) $data = [ $data ]; 
-		if (empty($data))                   return; 
+		if ($data instanceof \Sauce\SObject) $data = [ $data ];
+		if (empty($data))                   return;
 
 		if (!is_an_array($data)) {
 			$this->storage []= $data;
@@ -148,7 +148,12 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 			throw new \InvalidArgumentException("Invalid delimiter given: {$delimiter}");
 		}
 
-		$strings = $this->map(function ($v) { return strval($v); });
+		$strings = $this->map(function ($v) use ($delimiter) {
+			if (is_array($v)) {
+				// return implode($delimiter, $v);
+			}
+			return strval($v);
+		});
 
 		return S(join($delimiter, $strings->to_array()));
 	}
@@ -262,7 +267,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 			return $this->offsetUnset(0);
 		}
 
-		return null;		
+		return null;
 	}
 
 	/* Prepend given value(s) at the beginning. */
@@ -317,7 +322,7 @@ class Vector implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 		if (!is_numeric($index)) {
 			throw new \OutOfBoundsException('You are trying to access a non-numeric index.');
 		}
-		
+
 		if ($index >= $this->count() || $index < 0) {
 			throw new \OutOfBoundsException("Invalid index {$index}");
 		}
